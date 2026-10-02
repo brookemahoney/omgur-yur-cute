@@ -1,0 +1,3925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>So Cute Meadow</title>
+<style>
+:root {
+  /* ---- pink ramp -------------------------------------------------- */
+  --pink-50: #fff5fa;
+  --pink-100: #ffe6f2;
+  --pink-200: #ffcee5;
+  --pink-300: #ffaad2;
+  --pink-400: #ff7cb9;
+  --pink-500: #ff4d9e;
+  --pink-600: #ef2a80;
+  --pink-700: #c9146a;
+  --pink-800: #9c1055;
+  --pink-900: #6a0d3a;
+
+  /* ---- purple ramp ------------------------------------------------ */
+  --purple-50: #f9f5ff;
+  --purple-100: #f0e8ff;
+  --purple-200: #dfcbff;
+  --purple-300: #c6a5ff;
+  --purple-400: #a97cf7;
+  --purple-500: #8b4de1;
+  --purple-600: #7631c8;
+  --purple-700: #5f22a6;
+  --purple-800: #481a80;
+  --purple-900: #31135a;
+
+  /* ---- cream base ------------------------------------------------- */
+  --cream: #fffaf3;
+  --cream-2: #ffeede;
+  --cream-ink: #4b1f3e;
+  --cream-soft: #fff4fa;
+
+  /* ---- rainbow accents (ordered stops for gradient reuse) ---------- */
+  --rainbow-1: #ff5c8a;
+  --rainbow-2: #ffab4d;
+  --rainbow-3: #ffe066;
+  --rainbow-4: #92e8a8;
+  --rainbow-5: #82d2ff;
+  --rainbow-6: #a78bfa;
+  --rainbow-7: #f2aefb;
+  --rainbow-band: linear-gradient(90deg,
+    var(--rainbow-1), var(--rainbow-2), var(--rainbow-3), var(--rainbow-4),
+    var(--rainbow-5), var(--rainbow-6), var(--rainbow-7));
+
+  /* ---- decoration layer scale ------------------------------------- */
+  --z-backdrop: 0;
+  --z-mid: 1;
+  --z-content: 2;
+  --z-foreground: 3;
+
+  /* ---- type ------------------------------------------------------- */
+  --font-cute: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --measure: 62ch;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { overflow-x: clip; }
+
+body {
+  margin: 0;
+  overflow-x: clip;
+  font-family: var(--font-cute);
+  line-height: 1.6;
+  color: var(--cream-ink);
+  background-color: var(--cream);
+  background-image: linear-gradient(180deg, var(--pink-50), var(--cream-2) 55%, var(--purple-50));
+}
+
+/* ---- sections: one full-viewport band each, single vertical scroll -- */
+main > section {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+/* ---- the three layers, back to front ------------------------------ */
+.layer-backdrop { position: absolute; inset: 0; z-index: var(--z-backdrop); pointer-events: none; }
+.layer-mid { position: absolute; inset: 0; z-index: var(--z-mid); pointer-events: none; }
+/* Pointer-transparent box, pointer-live text. The layer covers its whole
+   section, so leaving it `auto` would make it swallow every pointer event
+   in the band and the saying carriers inside the margins would be
+   unreachable by a mouse however carefully they were placed. The layer
+   therefore passes the pointer through and only its children — the actual
+   words — answer it. */
+.layer-content { position: absolute; inset: 0; z-index: var(--z-content); pointer-events: none; display: grid; align-content: center; justify-items: center; gap: 0.75rem; padding: clamp(1.25rem, 5vw, 3.5rem); text-align: center; }
+
+/* ---- the legible central band ------------------------------------- */
+.layer-content > * { max-width: var(--measure); pointer-events: auto; }
+
+h1,
+h2 { margin: 0; line-height: 1.08; font-weight: 800; letter-spacing: -0.01em; text-wrap: balance; }
+h1 { font-size: clamp(2.5rem, 10vw, 6rem); color: var(--purple-700); text-shadow: 0 3px 0 var(--pink-200); }
+h2 { font-size: clamp(1.9rem, 6vw, 3.6rem); color: var(--purple-700); text-shadow: 0 2px 0 var(--pink-200); }
+p { margin: 0; font-size: clamp(1rem, 2.4vw, 1.3rem); color: var(--pink-800); }
+
+/* ---- 1. hero meadow: warm pink to lilac, room for arching rainbows -- */
+#hero-meadow .layer-backdrop {
+  background-image: linear-gradient(170deg, var(--pink-300) 0%, var(--pink-100) 42%, var(--purple-200) 100%);
+}
+
+/* ---- 2. bunny meadow: open meadow with a grass band at the bottom --- */
+#bunny-meadow .layer-backdrop {
+  background-image: linear-gradient(180deg, var(--cream-soft) 0%, var(--pink-100) 58%, var(--pink-200) 100%);
+}
+#bunny-meadow .layer-backdrop::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 20%;
+  background-image: linear-gradient(180deg, var(--purple-300) 0%, var(--purple-600) 100%);
+}
+
+/* ---- 3. heart wall: deep pink wall ---------------------------------- */
+/* The gradient's lightest stop has to carry light body copy for the whole
+   section, so it starts at pink-700 rather than pink-500. Against pink-100 the
+   paragraph text measured 4.42-4.51:1 depending on how antialiasing was
+   treated, straddling the 4.5:1 AA floor; on this range it clears 5:1. */
+#heart-wall .layer-backdrop {
+  background-image: linear-gradient(180deg, var(--pink-700) 0%, var(--pink-800) 55%, var(--purple-700) 100%);
+}
+#heart-wall h2 { color: var(--cream-soft); text-shadow: 0 2px 0 var(--pink-800); }
+#heart-wall p { color: var(--cream); }
+
+/* ---- 4. candy shelf: pastel candy stripes -------------------------- */
+#candy-shelf .layer-backdrop {
+  background-image: repeating-linear-gradient(90deg,
+    var(--pink-100) 0 9%,
+    var(--purple-100) 9% 18%,
+    var(--cream) 18% 27%,
+    var(--pink-200) 27% 36%);
+}
+
+/* ---- 5. rainbow sky: night purple for stars and moons -------------- */
+#rainbow-sky .layer-backdrop {
+  background-image: linear-gradient(180deg, var(--purple-900) 0%, var(--purple-700) 58%, var(--pink-700) 100%);
+}
+#rainbow-sky h2 { color: var(--cream-soft); text-shadow: 0 2px 0 var(--purple-900); }
+#rainbow-sky p { color: var(--purple-100); }
+
+/* ---- 6. cloud garden: soft cloud white and lavender ---------------- */
+#cloud-garden .layer-backdrop {
+  background-image: linear-gradient(180deg, var(--cream) 0%, var(--purple-50) 50%, var(--pink-50) 100%);
+}
+
+/* ---- 7. sparkle sign-off: the brightest finale ---------------------- */
+#sparkle-signoff .layer-backdrop {
+  background-image: linear-gradient(180deg, var(--pink-100) 0%, var(--purple-200) 52%, var(--pink-300) 100%);
+}
+
+/* =====================================================================
+   DECORATION VOCABULARY
+   Every generated element is a `.d` whose placement and compositing come
+   from the roster's seeded passes via custom properties. Only the
+   roster's `interactive` flag may opt an element into pointer events,
+   so the saying-carrier contract is data, not hand-toggling.
+   ===================================================================== */
+.d-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+.layer-mid > .d,
+.bunny-hop > .d {
+  position: absolute;
+  left: calc(var(--x) * 100%);
+  top: calc(var(--y) * 100%);
+  width: calc(var(--size) * 1px);
+  height: calc(var(--size) * 1px);
+  translate: -50% -50%;
+  scale: var(--scale, 1);
+  rotate: var(--rotate, 0deg);
+  opacity: var(--op, 1);
+  z-index: var(--z, 1);
+  color: var(--tint, var(--pink-400));
+  line-height: 0;
+  pointer-events: none;
+}
+.layer-mid > .d[data-saying-carrier] { pointer-events: auto; }
+.layer-mid > .d > svg,
+.bunny-hop > .d > svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+/* =====================================================================
+   HOPPING BUNNIES
+   Bunnies are the one decoration that genuinely travels across everything,
+   including body text, so they are mounted in a viewport-fixed layer of
+   their own rather than inside a section: a section creates a stacking
+   context, and a bunny inside one would be painted under the next section's
+   backdrop the moment it hopped past the boundary. Fixed, they stay above
+   every section, stay visible, and can cross all seven bands.
+
+   The layer is pointer-transparent and so is the wrapper and the mark, all
+   three, because that is what makes it safe to let a bunny fly over a
+   saying carrier or over a click target. `overflow: clip` keeps a bunny
+   that hops off-screen from spilling back over the page.
+
+   The wrapper carries placement and the hop transform, and nothing else: it
+   declares no `scale` and no `rotate`, because individual transform
+   properties apply BEFORE `transform`, so a scaled or rotated mark would
+   multiply and rotate the hop's translate and a bunny would travel further
+   than it was told to. The mark carries the drawing and its own seeded
+   scale and rotation, including the hero meadow's larger scale — one
+   drawing, two sizes.
+   ===================================================================== */
+.layer-bunnies {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  overflow: clip;
+  pointer-events: none;
+}
+.bunny-hop {
+  position: absolute;
+  left: calc(var(--x) * 100%);
+  top: calc(var(--y) * 100%);
+  width: calc(var(--size) * 1px);
+  height: calc(var(--size) * 1px);
+  translate: -50% -50%;
+  z-index: var(--z, 1);
+  pointer-events: none;
+}
+/* The wrapper already sits at the seeded position and is centred, so the
+   mark fills it exactly instead of applying the band position a second time.
+   `--bs` is the hero meadow's size multiplier and composes with the mark's
+   own seeded scale in one `scale`. */
+.bunny-hop > .d {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  translate: none;
+  scale: var(--bs, 1) var(--scale, 1);
+}
+
+/* ---- sparkles: four-point star shapes ------------------------------- */
+.d--sparkles { background: currentColor; clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%); }
+.d--sparkles.v1 { clip-path: polygon(50% 0, 57% 43%, 100% 50%, 57% 57%, 50% 100%, 43% 57%, 0 50%, 43% 43%); }
+.d--sparkles.v2 { rotate: calc(var(--rotate) + 45deg); clip-path: polygon(50% 0, 59% 41%, 100% 50%, 59% 59%, 50% 100%, 41% 59%, 0 50%, 41% 41%); }
+.d--sparkles.v3 { background: radial-gradient(circle, currentColor 0 24%, transparent 25%); }
+
+/* ---- hearts: CSS polygon hearts, four silhouettes ------------------- */
+.d--hearts { background: currentColor; clip-path: polygon(50% 100%, 6% 55%, 6% 30%, 16% 13%, 32% 9%, 50% 22%, 68% 9%, 84% 13%, 94% 30%, 94% 55%); }
+.d--hearts.v1 { clip-path: polygon(50% 96%, 12% 58%, 12% 34%, 22% 19%, 36% 15%, 50% 27%, 64% 15%, 78% 19%, 88% 34%, 88% 58%); }
+.d--hearts.v2 { background: linear-gradient(158deg, currentColor 0 58%, var(--pink-100) 59% 100%); }
+.d--hearts.v3::after { content: ""; position: absolute; inset: 30%; background: var(--cream); clip-path: inherit; }
+
+/* ---- bows: two loops plus a knot ------------------------------------
+   Loops and knot are all background layers of one element, because a
+   pseudo-element always paints over its parent's background — a knot
+   drawn on the parent would be buried by the loops. Listed last, the
+   knot wins. */
+.d--bows {
+  background:
+    radial-gradient(circle at 50% 50%, var(--cream) 0 11%, currentColor 12% 25%, transparent 26%),
+    radial-gradient(ellipse 28% 33% at 28% 50%, currentColor 0 98%, transparent 100%),
+    radial-gradient(ellipse 28% 33% at 72% 50%, currentColor 0 98%, transparent 100%);
+}
+.d--bows.v1 {
+  rotate: calc(var(--rotate) + 90deg);
+  background:
+    radial-gradient(circle at 50% 50%, var(--pink-100) 0 11%, currentColor 12% 25%, transparent 26%),
+    radial-gradient(ellipse 28% 33% at 28% 50%, currentColor 0 98%, transparent 100%),
+    radial-gradient(ellipse 28% 33% at 72% 50%, currentColor 0 98%, transparent 100%);
+}
+.d--bows.v2::before {
+  content: "";
+  position: absolute;
+  left: 43%;
+  top: 58%;
+  width: 14%;
+  height: 38%;
+  background: currentColor;
+  clip-path: polygon(0 0, 100% 12%, 100% 100%, 0 88%);
+}
+.d--bows.v3 { background:
+    radial-gradient(circle at 50% 50%, var(--purple-100) 0 11%, currentColor 12% 25%, transparent 26%),
+    radial-gradient(ellipse 22% 38% at 32% 50%, currentColor 0 98%, transparent 100%),
+    radial-gradient(ellipse 22% 38% at 68% 50%, currentColor 0 98%, transparent 100%); }
+
+/* ---- rainbows: gradient arcs, clipped to the upper half ------------- */
+.d--rainbows {
+  clip-path: inset(0 0 50% 0);
+  background-image: radial-gradient(circle at 50% 100%,
+    transparent 0 24%, var(--rainbow-1) 24% 30%, var(--rainbow-2) 30% 36%,
+    var(--rainbow-3) 36% 42%, var(--rainbow-4) 42% 48%, var(--rainbow-5) 48% 54%,
+    var(--rainbow-6) 54% 60%, var(--rainbow-7) 60% 66%, transparent 66% 100%);
+}
+.d--rainbows.v1 {
+  clip-path: inset(0 0 46% 0);
+  background-image: radial-gradient(circle at 50% 100%,
+    transparent 0 30%, var(--pink-300) 30% 38%, var(--purple-200) 38% 46%,
+    var(--rainbow-5) 46% 54%, var(--cream) 54% 62%, transparent 62% 100%);
+}
+.d--rainbows.v2 {
+  clip-path: inset(0 0 42% 0);
+  background-image: radial-gradient(circle at 50% 100%,
+    transparent 0 16%, var(--rainbow-1) 16% 22%, var(--rainbow-2) 22% 28%,
+    var(--rainbow-3) 28% 34%, transparent 34% 36%, var(--purple-400) 36% 42%,
+    var(--rainbow-5) 42% 48%, var(--rainbow-7) 48% 54%, transparent 54% 100%);
+}
+.d--rainbows.v3::before,
+.d--rainbows.v3::after { content: ""; position: absolute; bottom: 44%; width: 22%; height: 16%; background: var(--cream); border-radius: 60% 60% 50% 50%; }
+.d--rainbows.v3::before { left: -2%; }
+.d--rainbows.v3::after { right: -2%; }
+
+/* ---- flowers: layered petal rings ----------------------------------- */
+.d--flowers {
+  background:
+    radial-gradient(ellipse 24% 24% at 50% 26%, currentColor 0 98%, transparent 100%),
+    radial-gradient(ellipse 24% 24% at 72.8% 42.6%, currentColor 0 98%, transparent 100%),
+    radial-gradient(ellipse 24% 24% at 64.1% 69.4%, currentColor 0 98%, transparent 100%),
+    radial-gradient(ellipse 24% 24% at 35.9% 69.4%, currentColor 0 98%, transparent 100%),
+    radial-gradient(ellipse 24% 24% at 27.2% 42.6%, currentColor 0 98%, transparent 100%);
+}
+.d--flowers::before {
+  content: "";
+  position: absolute;
+  inset: 16%;
+  background:
+    radial-gradient(ellipse 22% 22% at 50% 24%, var(--cream) 0 98%, transparent 100%),
+    radial-gradient(ellipse 22% 22% at 73.6% 41.3%, var(--cream) 0 98%, transparent 100%),
+    radial-gradient(ellipse 22% 22% at 64.7% 69.4%, var(--cream) 0 98%, transparent 100%),
+    radial-gradient(ellipse 22% 22% at 35.3% 69.4%, var(--cream) 0 98%, transparent 100%),
+    radial-gradient(ellipse 22% 22% at 26.4% 41.3%, var(--cream) 0 98%, transparent 100%);
+}
+.d--flowers::after {
+  content: "";
+  position: absolute;
+  inset: 36%;
+  border-radius: 50%;
+  background: var(--rainbow-3);
+  box-shadow: inset 0 0 0 14% var(--rainbow-2);
+}
+.d--flowers.v1 {
+  background:
+    radial-gradient(ellipse 25% 25% at 50% 25%, currentColor 0 98%, transparent 100%),
+    radial-gradient(ellipse 25% 25% at 71.7% 37.5%, currentColor 0 98%, transparent 100%),
+    radial-gradient(ellipse 25% 25% at 71.7% 62.5%, currentColor 0 98%, transparent 100%),
+    radial-gradient(ellipse 25% 25% at 50% 75%, currentColor 0 98%, transparent 100%),
+    radial-gradient(ellipse 25% 25% at 28.3% 62.5%, currentColor 0 98%, transparent 100%),
+    radial-gradient(ellipse 25% 25% at 28.3% 37.5%, currentColor 0 98%, transparent 100%);
+}
+.d--flowers.v1::before { display: none; }
+.d--flowers.v2 {
+  background:
+    radial-gradient(ellipse 29% 29% at 50% 28%, currentColor 0 98%, transparent 100%),
+    radial-gradient(ellipse 29% 29% at 72% 50%, currentColor 0 98%, transparent 100%),
+    radial-gradient(ellipse 29% 29% at 50% 72%, currentColor 0 98%, transparent 100%),
+    radial-gradient(ellipse 29% 29% at 28% 50%, currentColor 0 98%, transparent 100%);
+}
+.d--flowers.v2::before { display: none; }
+.d--flowers.v2::after { inset: 30%; }
+.d--flowers.v3 {
+  background:
+    radial-gradient(ellipse 18% 18% at 50% 22%, currentColor 0 98%, transparent 100%),
+    radial-gradient(ellipse 18% 18% at 66.5% 32%, currentColor 0 98%, transparent 100%),
+    radial-gradient(ellipse 18% 18% at 76.5% 58%, currentColor 0 98%, transparent 100%),
+    radial-gradient(ellipse 18% 18% at 66.5% 84%, currentColor 0 98%, transparent 100%),
+    radial-gradient(ellipse 18% 18% at 33.5% 84%, currentColor 0 98%, transparent 100%),
+    radial-gradient(ellipse 18% 18% at 23.5% 58%, currentColor 0 98%, transparent 100%),
+    radial-gradient(ellipse 18% 18% at 33.5% 32%, currentColor 0 98%, transparent 100%);
+}
+.d--flowers.v3::before { display: none; }
+.d--flowers.v3::after { inset: 30%; }
+
+/* =====================================================================
+   THE TWO BUDGETS
+   Density is a page-total property: the roster mounts 529 decorations.
+   Smoothness is a moment-to-moment property: at most ~180 of them move at
+   once. Keeping the two numbers separate is what lets the page be both
+   saturated and smooth, so nothing here animates the whole roster.
+
+   Only the seeded "active" subset carries an ambient animation. The rest
+   get an idle treatment (static, or a transform-only hover response where
+   the roster marked them interactive). Off-screen sections pause their
+   animations entirely, so the running count stays under the budget no
+   matter how high the roster floors are raised.
+
+   Every @keyframes below animates `transform` and `opacity` and nothing
+   else, and no transition in this file names a layout property, so all of
+   the motion rides the compositor and none of it can trigger layout.
+   Opacity is written relative to each element's own --op so the seeded
+   depth pass still reads through — and it never reaches zero, because a
+   decoration that has stopped moving must still be visible.
+
+   No `will-change` anywhere, on purpose: promoting hundreds of layers
+   would cost more memory than the animations it tries to save, and a
+   running compositor animation is promoted anyway.
+
+   The transforms below are deltas only, and they compose on top of the
+   element's own `translate: -50% -50%` centring plus its seeded `scale`
+   and `rotate` — individual properties apply before `transform`, so the
+   seeded compositing survives untouched.
+   ===================================================================== */
+@keyframes amb-drift {
+  0%, 100% { transform: translate3d(-6px, 4px, 0); opacity: calc(var(--op, 1) * 0.72); }
+  50% { transform: translate3d(7px, -6px, 0); opacity: var(--op, 1); }
+}
+@keyframes amb-twinkle {
+  0%, 100% { transform: scale(0.92); opacity: calc(var(--op, 1) * 0.6); }
+  50% { transform: scale(1.08); opacity: var(--op, 1); }
+}
+@keyframes amb-sway {
+  0%, 100% { transform: rotate(-4deg) translateX(-3px); opacity: calc(var(--op, 1) * 0.82); }
+  50% { transform: rotate(4deg) translateX(3px); opacity: var(--op, 1); }
+}
+@keyframes amb-float {
+  0%, 100% { transform: translateY(8px); opacity: calc(var(--op, 1) * 0.74); }
+  50% { transform: translateY(-8px); opacity: var(--op, 1); }
+}
+@keyframes amb-bob {
+  0%, 100% { transform: translateY(-5px) scale(0.97); opacity: calc(var(--op, 1) * 0.78); }
+  50% { transform: translateY(5px) scale(1.03); opacity: var(--op, 1); }
+}
+@keyframes amb-shimmer {
+  0%, 100% { transform: scale(1) translateX(2px); opacity: calc(var(--op, 1) * 0.66); }
+  50% { transform: scale(0.96) translateX(-2px); opacity: var(--op, 1); }
+}
+@keyframes amb-spin {
+  0% { transform: rotate(0deg) scale(0.94); opacity: calc(var(--op, 1) * 0.7); }
+  100% { transform: rotate(360deg) scale(1.06); opacity: var(--op, 1); }
+}
+
+/* One shared timing envelope. Only the name, the delay and the duration
+   are per-element, and all three are precomputed from the seeded index at
+   materialisation time — nothing here is sampled per frame. */
+.layer-mid > .d.d--live {
+  animation-duration: var(--dur);
+  animation-delay: var(--delay);
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+}
+/* The name is bound at low specificity on purpose: a media query adds no
+   specificity of its own, so the reduced-motion block below has to be
+   able to outrank every one of these with a single rule. */
+.d.amb-drift { animation-name: amb-drift; }
+.d.amb-twinkle { animation-name: amb-twinkle; }
+.d.amb-sway { animation-name: amb-sway; }
+.d.amb-float { animation-name: amb-float; }
+.d.amb-bob { animation-name: amb-bob; }
+.d.amb-shimmer { animation-name: amb-shimmer; }
+.d.amb-spin { animation-name: amb-spin; animation-timing-function: linear; }
+
+/* Off-screen suspension: freeze in place, never fade out. An element
+   frozen mid-cycle is still visible, and it resumes from exactly the frame
+   it left; hiding it would read as broken rather than as resting. */
+.is-suspended .d--live { animation-play-state: paused; }
+
+/* Idle decoration still reads as decorated without costing any budget:
+   the roster's own `interactive` flag lets a saying carrier answer the
+   pointer with a cheap transform/opacity transition, and nothing else
+   animates until the pointer asks for it. */
+.layer-mid > .d.d--idle[data-saying-carrier] {
+  transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+}
+.layer-mid > .d.d--idle[data-saying-carrier]:hover {
+  transform: scale(1.14);
+  opacity: 1;
+}
+
+/* =====================================================================
+   AFFIRMATION SAYINGS
+   ONE bubble, styled once. The five styles below are a position and a
+   lifecycle on top of `.saying`, never a second look: a rounded
+   pink-to-purple pill with a soft shadow, entering on a bouncy
+   transform/opacity keyframe and nothing else.
+
+   Two hosts, because two coordinate spaces exist and the page never
+   measures one:
+
+     `.layer-sayings` — one per section, `inset: 0` inside the section
+       exactly like `.layer-mid`, so the two SHARE a coordinate space.
+       That is what lets a hover bubble be placed from its carrier's own
+       seeded `--x`/`--y` with no layout read, and it is where the
+       authored static spots live. It sits at `--z-mid`, i.e. above the
+       decoration and below `.layer-content`, so a saying can never
+       cover body text.
+
+     `#saying-fx` — one viewport-fixed layer above every section, for the
+       styles that cross the page: drift, timed pop-ins, the follower and
+       the rainbow trail. Those are the transient ones, and each one
+       parks itself outside the declared content column, which is what
+       keeps a bubble that floats over the viewport off the words.
+
+   Every @keyframes here animates `transform` and `opacity` only, and
+   every opacity is written against the element's own `--op`, so the
+   seeded depth pass still reads through.
+   ===================================================================== */
+.saying {
+  --op: 1;
+  position: absolute;
+  /* Padded in from the edge by more than half a bubble, so a saying placed
+     in a margin is never clipped by the viewport. 84px is just over half
+     the component's 26ch maximum width. */
+  left: clamp(84px, calc(var(--sx, 0.5) * 100%), calc(100% - 84px));
+  top: calc(var(--sy, 0.5) * 100%);
+  translate: -50% -50%;
+  z-index: 5;
+  max-width: 26ch;
+  padding: 0.34em 0.8em;
+  border-radius: 999px;
+  background-image: linear-gradient(148deg, var(--pink-400), var(--purple-500));
+  color: var(--cream);
+  font-family: var(--font-cute);
+  font-size: clamp(0.6rem, 1.05vw, 0.78rem);
+  font-weight: 700;
+  line-height: 1.22;
+  text-align: center;
+  text-wrap: balance;
+  pointer-events: none;
+  box-shadow: 0 8px 18px -8px rgba(111, 33, 92, 0.55), 0 0 0 2px var(--pink-200);
+}
+/* The section-scoped host: same box as `.layer-mid`, painted after it,
+   painted before `.layer-content`. */
+.layer-sayings { position: absolute; inset: 0; z-index: var(--z-mid); pointer-events: none; }
+/* The page-scoped host for everything that crosses the viewport. */
+.layer-sayings-fx { position: fixed; inset: 0; z-index: var(--z-foreground); overflow: clip; pointer-events: none; }
+
+@keyframes saying-in {
+  0% { transform: scale(0.34) translateY(10px); opacity: calc(var(--op, 1) * 0.6); }
+  42% { transform: scale(1.14) translateY(-3px); opacity: var(--op, 1); }
+  72% { transform: scale(0.96) translateY(1px); opacity: var(--op, 1); }
+  100% { transform: scale(1) translateY(0); opacity: var(--op, 1); }
+}
+@keyframes saying-pop {
+  0% { transform: scale(0.3); opacity: calc(var(--op, 1) * 0.6); }
+  38% { transform: scale(1.13); opacity: var(--op, 1); }
+  100% { transform: scale(0.74) translateY(-20px); opacity: calc(var(--op, 1) * 0.6); }
+}
+@keyframes saying-drift {
+  0% { transform: translate3d(-34vw, 5vh, 0); opacity: calc(var(--op, 1) * 0.7); }
+  50% { transform: translate3d(2vw, -4vh, 0); opacity: var(--op, 1); }
+  100% { transform: translate3d(36vw, -11vh, 0); opacity: calc(var(--op, 1) * 0.7); }
+}
+
+/* --- (d) static placed spots: authored, no JS, and only ever at rest --- */
+.saying--spot { rotate: var(--srot, -2deg); }
+/* The one tab stop per section that carries a saying to keyboard and assistive
+   technology. It is a visible spot already, so nothing new is drawn; all it
+   adds is a focus ring that is unmistakable against a busy pink background. */
+.saying--a11y:focus-visible {
+  outline: 3px solid var(--purple-900);
+  outline-offset: 3px;
+}
+.saying--a11y:focus-visible { z-index: 3; }
+
+/* Below the wide breakpoint the centred text column spans the full width,
+   so there is no left or right margin to hide a saying in and every spot
+   moves into the top or bottom band instead. `--ny` is that band's
+   coordinate, authored beside `--sy`; the roster's own bands come from the
+   same numbers on the JS side. */
+@media (max-width: 699px) {
+  .saying--spot { top: calc(var(--ny, 0.06) * 100%); }
+}
+
+/* --- (a) hover and focus bubbles: parked just above their carrier --- */
+.saying--hover {
+  translate: -50% -136%;
+  z-index: 6;
+  opacity: 0;
+  visibility: hidden;
+}
+.saying--hover.is-in { visibility: visible; animation: saying-in 0.44s cubic-bezier(0.34, 1.62, 0.5, 1) both; }
+
+/* --- (b) scroll reveals: hidden until their one and only fire --- */
+.saying--reveal { opacity: 0; }
+.saying--reveal.is-revealed { animation: saying-in 0.6s cubic-bezier(0.34, 1.62, 0.5, 1) both; }
+
+/* --- (c) drift: a looping path, paused rather than removed when the
+       shared motion budget has no room for it --- */
+.saying--drift {
+  animation-name: saying-drift;
+  animation-duration: var(--dur, 18s);
+  animation-delay: var(--delay, 0s);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+}
+.saying--drift.say-paused { animation-play-state: paused; }
+
+/* --- (e) pop-ins, the follower and the rainbow trail --- */
+.saying--pop { animation: saying-pop var(--life, 1.5s) cubic-bezier(0.3, 1.4, 0.5, 1) both; }
+.saying--follow {
+  position: fixed;
+  left: 0;
+  top: 0;
+  /* Centred on its own transform point, so the parking arithmetic below is
+     arithmetic about where the bubble actually is. */
+  translate: -50% -50%;
+  z-index: 7;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+.saying--follow.is-in { opacity: var(--op, 1); }
+.saying--trail {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-image: var(--rainbow-band);
+  background-size: 100% 100%;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* =====================================================================
+   THE CUTENESS SLIDER
+   A native range input in one fixed card, top-right corner, above every
+   decoration layer. Native is the whole point: keyboard operability, the
+   slider role, `aria-valuetext` and focus handling are inherited from the
+   platform rather than reimplemented, which is exactly why the heart is a
+   `clip-path` on the platform's own thumb pseudo-element and not a
+   rebuilt widget with its own key handling.
+
+   Two chrome decisions earn their place. The track is the page's own
+   rainbow ramp, so the control is unmistakably part of the meadow
+   rather than a browser widget dropped on top of it. And the thumb is
+   the roster's own heart silhouette — the same `clip-path` vocabulary
+   `.d--hearts` already uses — so the page has one heart shape instead
+   of two, drawn with no image asset at all.
+
+   `z-index` sits above `.layer-bunnies` (4) and above `--z-foreground`
+   (3); the `z-index: 5`–`7` sayings are inside their own stacking
+   contexts, so they cannot reach past this card either. Nothing can
+   bury the control, and nothing needs to: the herd hops
+   pointer-transparently.
+   ===================================================================== */
+.cuteness {
+  --cut-track: 14px;
+  --cut-thumb: 34px;
+  position: fixed;
+  top: clamp(0.5rem, 1.6vw, 1.1rem);
+  right: clamp(0.5rem, 1.6vw, 1.1rem);
+  z-index: 6;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.15rem 0.5rem;
+  width: min(14.5rem, calc(100vw - 1.5rem));
+  padding: 0.45rem 0.7rem 0.5rem;
+  border-radius: 1.15rem;
+  border: 2px solid var(--pink-300);
+  background-image: linear-gradient(152deg, var(--pink-100), var(--purple-100));
+  box-shadow: 0 12px 24px -14px rgba(111, 33, 92, 0.75), inset 0 0 0 1px var(--cream);
+  font-family: var(--font-cute);
+}
+.cuteness__label {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--purple-700);
+}
+/* Purely visual: the readout is aria-hidden so a screen reader hears the
+   level once, from `aria-valuetext`, instead of twice on every keypress. */
+.cuteness__readout {
+  justify-self: end;
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: var(--pink-700);
+  white-space: nowrap;
+}
+.cuteness__range {
+  grid-column: 1 / -1;
+  width: 100%;
+  /* The thumb is much taller than the track, and a replaced element's
+     painted box does not grow its layout box — so the row is sized for the
+     HEART, not the track, or the heart would spill out of the card. */
+  height: calc(var(--cut-thumb) + 0.3rem);
+  margin: 0.2rem 0 0;
+  padding: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  /* Transparent on purpose: the track pseudo-elements own every pixel of
+     colour, so the control cannot end up with two competing candy bars. */
+  background: transparent;
+  border-radius: 999px;
+  cursor: grab;
+}
+.cuteness__range:active { cursor: grabbing; }
+
+.cuteness__range::-webkit-slider-runnable-track {
+  height: var(--cut-track);
+  border-radius: 999px;
+  background-image: var(--rainbow-band);
+  box-shadow: inset 0 0 0 2px var(--pink-200), inset 0 2px 4px -2px rgba(111, 33, 92, 0.55);
+}
+.cuteness__range::-moz-range-track {
+  height: var(--cut-track);
+  border-radius: 999px;
+  background-image: var(--rainbow-band);
+  box-shadow: inset 0 0 0 2px var(--pink-200), inset 0 2px 4px -2px rgba(111, 33, 92, 0.55);
+}
+/* Firefox paints the travelled part separately; the same band under a
+   light wash reads as "how far along" without a second colour. */
+.cuteness__range::-moz-range-progress {
+  height: var(--cut-track);
+  border-radius: 999px;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.34)), var(--rainbow-band);
+}
+
+.cuteness__range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--cut-thumb);
+  height: var(--cut-thumb);
+  /* Centred on the track: the half-height difference, less the border the
+     inset ring adds on each side. */
+  margin-top: calc((var(--cut-track) - var(--cut-thumb)) / 2 - 2px);
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  background-image:
+    radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.92) 0 14%, transparent 15%),
+    linear-gradient(158deg, var(--pink-500), var(--purple-600));
+  clip-path: polygon(
+    50% 100%, 38% 89%, 27% 78%, 17% 65%, 8% 52%, 3% 42%,
+    4% 31%, 8% 21%, 16% 13%, 26% 11%, 37% 15%, 45% 23%, 50% 31%,
+    55% 23%, 63% 15%, 74% 11%, 84% 13%, 92% 21%, 96% 31%,
+    97% 42%, 92% 52%, 83% 65%, 73% 78%, 62% 89%);
+}
+.cuteness__range::-moz-range-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--cut-thumb);
+  height: var(--cut-thumb);
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  background-image:
+    radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.92) 0 14%, transparent 15%),
+    linear-gradient(158deg, var(--pink-500), var(--purple-600));
+  clip-path: polygon(
+    50% 100%, 38% 89%, 27% 78%, 17% 65%, 8% 52%, 3% 42%,
+    4% 31%, 8% 21%, 16% 13%, 26% 11%, 37% 15%, 45% 23%, 50% 31%,
+    55% 23%, 63% 15%, 74% 11%, 84% 13%, 92% 21%, 96% 31%,
+    97% 42%, 92% 52%, 83% 65%, 73% 78%, 62% 89%);
+}
+/* The focus ring is on the input, not the thumb: a thumb clipped to a
+   heart would clip its own outline away, and the ring is an acceptance
+   criterion rather than decoration. */
+.cuteness__range:focus-visible {
+  outline: 3px solid var(--purple-800);
+  outline-offset: 4px;
+  border-radius: 999px;
+  box-shadow: 0 0 0 7px var(--pink-200);
+}
+.cuteness__range:focus-visible::-webkit-slider-thumb { transform: scale(1.16); }
+.cuteness__range:focus-visible::-moz-range-thumb { transform: scale(1.16); }
+
+/* =====================================================================
+   THE CLICK BLOOM
+   One container per click, a randomised mix of the roster's OWN shapes
+   inside it, and ONE removal for the whole thing.
+
+   The pieces are `.d--sparkles`, `.d--hearts` and `.d--sakura` — the
+   same `clip-path` shapes and the same sprite the roster already mounts,
+   so a bloom draws nothing new and the page still has exactly one
+   sparkle, one heart and one petal in total. The layer is fixed and
+   pointer-transparent for the same reason the bunny layer is: a burst has
+   to be visible over everything and answer nothing, and it is placed
+   from `clientX/clientY`, which is a viewport coordinate, so it must not
+   live inside a section.
+
+   Removal is the load-bearing part. Every piece animates, and the FIRST
+   `animationend` to reach the container retires the whole burst — one
+   container so removal is one operation — behind a guard so the listener
+   cannot fire twice for the same burst.
+   ===================================================================== */
+.layer-bloom {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  overflow: clip;
+  pointer-events: none;
+}
+.bloom {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  transform: translate3d(var(--bx), var(--by), 0);
+}
+.bloom-piece {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(var(--size) * 1px);
+  height: calc(var(--size) * 1px);
+  /* Centred on its own origin, so the outward transform below is a
+     delta from the click point and not from a corner. */
+  translate: -50% -50%;
+  color: var(--tint, var(--pink-400));
+  line-height: 0;
+  opacity: var(--op, 1);
+}
+.bloom-piece > svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+/* Outward flight, and the still treatment reduced motion gets. Both are
+   `transform` and `opacity` only, and both end at zero opacity because a
+   burst is FINITE: the container is removed the moment the animation
+   finishes, so a piece that never faded would pop out of existence. The
+   infinite ambient set never does that — a decoration paused mid-cycle
+   still has to be visible. */
+@keyframes bloom-out {
+  0% { transform: translate3d(0px, 0px, 0) scale(0.42); opacity: calc(var(--op, 1) * 0.85); }
+  38% { transform: translate3d(calc(var(--bx) * 0.6), calc(var(--by) * 0.6), 0) scale(1.06); opacity: var(--op, 1); }
+  100% { transform: translate3d(var(--bx), var(--by), 0) scale(0.66); opacity: calc(var(--op, 1) * 0); }
+}
+@keyframes bloom-still {
+  /* A twelfth of the way out, which is separation rather than travel: a
+   * cluster of a dozen pieces stacked on one point is a blob, and the
+   * point of the still treatment is that it appears, not that it sits
+   * in a perfect pile. */
+  0% { transform: translate3d(0px, 0px, 0) scale(0.5); opacity: calc(var(--op, 1) * 0.3); }
+  34% { transform: translate3d(calc(var(--bx) * 0.12), calc(var(--by) * 0.12), 0) scale(1.22); opacity: var(--op, 1); }
+  100% { transform: translate3d(calc(var(--bx) * 0.12), calc(var(--by) * 0.12), 0) scale(0.9); opacity: calc(var(--op, 1) * 0); }
+}
+.bloom--fly .bloom-piece {
+  animation-name: bloom-out;
+  animation-duration: var(--life);
+  animation-timing-function: cubic-bezier(0.16, 0.7, 0.3, 1);
+  animation-fill-mode: both;
+}
+.bloom--still .bloom-piece {
+  animation-name: bloom-still;
+  animation-duration: var(--life);
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
+}
+
+/* Motion sensitivity: ambient motion stops and every decoration stays put
+   and visible. Sayings are not decoration, so they are not removed
+   either — a reveal becomes a plain fade and the drifting, popping and
+   trailing bubbles hold still instead of travelling. This governs visual
+   motion only: a motion preference is not an audio preference, so it says
+   nothing about any sound.
+
+   The click bloom is visual, so it is governed here too: its pieces fade
+   where they were made instead of flying outward. They still appear, and
+   they still remove themselves. The chime is deliberately absent from
+   this block — a motion preference is not an audio preference, and the
+   chime has to keep firing. */
+@media (prefers-reduced-motion: reduce) {
+  .bloom--fly .bloom-piece { animation-name: bloom-still; animation-timing-function: ease-out; }
+  .layer-mid > .d.d--live { animation-name: none; }
+  .bunny-hop > .d { animation-name: none; }
+  .layer-mid > .d.d--idle[data-saying-carrier] { transition: none; }
+  .layer-mid > .d.d--idle[data-saying-carrier]:hover { transform: none; }
+  .saying--hover.is-in { animation-name: none; transform: none; opacity: var(--op, 1); }
+  .saying--reveal.is-revealed { animation-name: none; transform: none; opacity: var(--op, 1); }
+  .saying--pop { animation-name: none; opacity: var(--op, 1); }
+  .saying--drift { animation-name: none; transform: none; }
+  .saying--follow { transition: none; }
+}
+</style>
+</head>
+<body>
+<svg class="d-sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><defs>
+<g id="m-sakura-0" fill="currentColor"><path d="M12 2c3.6 3.4 5.6 6.2 5.6 9a5.6 5.6 0 0 1-11.2 0c0-2.8 2-5.6 5.6-9z"/></g>
+<g id="m-sakura-1" fill="currentColor"><ellipse cx="12" cy="6.4" rx="2.5" ry="3.7"/><ellipse cx="12" cy="17.6" rx="2.5" ry="3.7"/><ellipse cx="7" cy="9.2" rx="2.5" ry="3.7"/><ellipse cx="17" cy="9.2" rx="2.5" ry="3.7"/><ellipse cx="7" cy="14.8" rx="2.5" ry="3.7"/><ellipse cx="17" cy="14.8" rx="2.5" ry="3.7"/><circle cx="12" cy="12" r="1.7" fill="var(--rainbow-3)"/></g>
+<g id="m-sakura-2" fill="currentColor"><path d="M12 2.6c2.7 2.5 4.2 4.6 4.2 6.4a4.2 4.2 0 0 1-8.4 0c0-1.8 1.5-3.9 4.2-6.4z"/><path d="M12 13v8.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></g>
+<g id="m-sakura-3" fill="currentColor"><path d="M2.6 20.6C8 16 14 12 21.4 4.6" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><ellipse cx="7.6" cy="14.6" rx="2.3" ry="3.3" transform="rotate(-38 7.6 14.6)"/><ellipse cx="13.6" cy="9.8" rx="2.3" ry="3.3" transform="rotate(28 13.6 9.8)"/><ellipse cx="19.4" cy="5.2" rx="2.1" ry="2.9" transform="rotate(48 19.4 5.2)"/></g>
+
+<g id="m-bunnies-0">
+<ellipse data-part="ear" cx="8.7" cy="5.6" rx="2.1" ry="5" transform="rotate(-11 8.7 5.6)" fill="var(--pink-100)"/>
+<ellipse data-part="ear" cx="15.3" cy="5.6" rx="2.1" ry="5" transform="rotate(11 15.3 5.6)" fill="var(--pink-100)"/>
+<ellipse data-part="ear" cx="8.9" cy="5.9" rx="0.9" ry="3.1" transform="rotate(-11 8.9 5.9)" fill="currentColor"/>
+<ellipse data-part="ear" cx="15.1" cy="5.9" rx="0.9" ry="3.1" transform="rotate(11 15.1 5.9)" fill="currentColor"/>
+<circle data-part="head" cx="12" cy="14.8" r="6.7" fill="var(--pink-100)"/>
+<circle data-part="eye" cx="9.7" cy="14" r="0.95" fill="var(--purple-900)"/>
+<circle data-part="eye" cx="14.3" cy="14" r="0.95" fill="var(--purple-900)"/>
+<ellipse data-part="blush" cx="7.6" cy="16" rx="1.5" ry="1.05" fill="var(--pink-300)"/>
+<ellipse data-part="blush" cx="16.4" cy="16" rx="1.5" ry="1.05" fill="var(--pink-300)"/>
+<path data-part="nose" d="M12 15.9c.62 0 1.05.43 1.05.95S12.62 17.8 12 17.8s-1.05-.43-1.05-.95.43-.95 1.05-.95z" fill="var(--pink-600)"/>
+<path data-part="mouth" d="M12 17.8v1.05M12 18.85c-.75 0-1.35.5-1.62 1.15M12 18.85c.75 0 1.35.5 1.62 1.15" fill="none" stroke="var(--purple-800)" stroke-width="0.85" stroke-linecap="round"/>
+</g>
+<g id="m-bunnies-1">
+<ellipse data-part="ear" cx="8.4" cy="6.2" rx="2" ry="4.6" transform="rotate(-6 8.4 6.2)" fill="var(--cream)"/>
+<ellipse data-part="ear" cx="15.6" cy="6.2" rx="2" ry="4.6" transform="rotate(6 15.6 6.2)" fill="var(--cream)"/>
+<ellipse data-part="ear" cx="8.6" cy="6.5" rx="0.85" ry="2.9" transform="rotate(-6 8.6 6.5)" fill="currentColor"/>
+<ellipse data-part="ear" cx="15.4" cy="6.5" rx="0.85" ry="2.9" transform="rotate(6 15.4 6.5)" fill="currentColor"/>
+<circle data-part="head" cx="12" cy="15" r="7.1" fill="var(--cream)"/>
+<circle data-part="eye" cx="9.4" cy="14.2" r="1.05" fill="var(--purple-900)"/>
+<circle data-part="eye" cx="14.6" cy="14.2" r="1.05" fill="var(--purple-900)"/>
+<circle data-part="eye" cx="9.75" cy="13.85" r="0.34" fill="var(--cream)"/>
+<circle data-part="eye" cx="14.95" cy="13.85" r="0.34" fill="var(--cream)"/>
+<ellipse data-part="blush" cx="7.3" cy="16.2" rx="1.6" ry="1.1" fill="var(--pink-300)"/>
+<ellipse data-part="blush" cx="16.7" cy="16.2" rx="1.6" ry="1.1" fill="var(--pink-300)"/>
+<path data-part="nose" d="M12 16.1c.6 0 1.02.42 1.02.92S12.6 17.94 12 17.94s-1.02-.42-1.02-.92.42-.92 1.02-.92z" fill="var(--pink-500)"/>
+<path data-part="mouth" d="M12 17.94v1M12 18.94c-.72 0-1.3.48-1.56 1.1M12 18.94c.72 0 1.3.48 1.56 1.1" fill="none" stroke="var(--purple-800)" stroke-width="0.85" stroke-linecap="round"/>
+</g>
+<g id="m-bunnies-2">
+<ellipse data-part="ear" cx="8" cy="5.2" rx="1.95" ry="4.9" transform="rotate(-17 8 5.2)" fill="var(--purple-100)"/>
+<ellipse data-part="ear" cx="15.9" cy="5.2" rx="1.95" ry="4.9" transform="rotate(17 15.9 5.2)" fill="var(--purple-100)"/>
+<ellipse data-part="ear" cx="8.3" cy="5.5" rx="0.82" ry="3" transform="rotate(-17 8.3 5.5)" fill="currentColor"/>
+<ellipse data-part="ear" cx="15.6" cy="5.5" rx="0.82" ry="3" transform="rotate(17 15.6 5.5)" fill="currentColor"/>
+<circle data-part="head" cx="12" cy="14.6" r="6.4" fill="var(--purple-100)"/>
+<circle data-part="eye" cx="9.9" cy="13.9" r="0.9" fill="var(--purple-900)"/>
+<circle data-part="eye" cx="14.1" cy="13.9" r="0.9" fill="var(--purple-900)"/>
+<ellipse data-part="blush" cx="8" cy="15.9" rx="1.4" ry="1" fill="var(--pink-200)"/>
+<ellipse data-part="blush" cx="16" cy="15.9" rx="1.4" ry="1" fill="var(--pink-200)"/>
+<path data-part="nose" d="M12 15.7c.6 0 1.02.42 1.02.92S12.6 17.54 12 17.54s-1.02-.42-1.02-.92.42-.92 1.02-.92z" fill="var(--pink-600)"/>
+<path data-part="mouth" d="M12 17.54v1.02M12 18.56c-.72 0-1.3.48-1.56 1.1M12 18.56c.72 0 1.3.48 1.56 1.1" fill="none" stroke="var(--purple-800)" stroke-width="0.85" stroke-linecap="round"/>
+</g>
+<g id="m-bunnies-3">
+<ellipse data-part="ear" cx="9.1" cy="5.4" rx="2.05" ry="5.1" transform="rotate(-19 9.1 5.4)" fill="var(--pink-200)"/>
+<ellipse data-part="ear" cx="14.9" cy="5.4" rx="2.05" ry="5.1" transform="rotate(5 14.9 5.4)" fill="var(--pink-200)"/>
+<ellipse data-part="ear" cx="9.4" cy="5.7" rx="0.88" ry="3.15" transform="rotate(-19 9.4 5.7)" fill="currentColor"/>
+<ellipse data-part="ear" cx="14.6" cy="5.7" rx="0.88" ry="3.15" transform="rotate(5 14.6 5.7)" fill="currentColor"/>
+<circle data-part="head" cx="12" cy="15" r="6.9" fill="var(--pink-200)"/>
+<circle data-part="eye" cx="9.5" cy="14.3" r="0.95" fill="var(--pink-900)"/>
+<circle data-part="eye" cx="14.5" cy="14.1" r="0.95" fill="var(--pink-900)"/>
+<ellipse data-part="blush" cx="7.4" cy="16.1" rx="1.55" ry="1.05" fill="var(--pink-400)" opacity=".8"/>
+<ellipse data-part="blush" cx="16.6" cy="15.9" rx="1.55" ry="1.05" fill="var(--pink-400)" opacity=".8"/>
+<path data-part="nose" d="M12 16.05c.62 0 1.05.43 1.05.95S12.62 17.95 12 17.95s-1.05-.43-1.05-.95.43-.95 1.05-.95z" fill="var(--pink-600)"/>
+<path data-part="mouth" d="M12 17.95v1.05M12 19c-.75 0-1.35.5-1.62 1.15M12 19c.75 0 1.35.5 1.62 1.15" fill="none" stroke="var(--pink-900)" stroke-width="0.85" stroke-linecap="round"/>
+</g>
+
+<g id="m-teddies-0" fill="currentColor"><circle cx="6.3" cy="7.4" r="3.4"/><circle cx="17.7" cy="7.4" r="3.4"/><circle cx="12" cy="13.6" r="7.6"/><ellipse cx="12" cy="16" rx="3.3" ry="2.4" fill="var(--cream)"/><circle cx="9.6" cy="12.4" r=".9" fill="var(--purple-900)"/><circle cx="14.4" cy="12.4" r=".9" fill="var(--purple-900)"/><ellipse cx="12" cy="14.4" rx="1" ry=".8" fill="var(--purple-900)"/></g>
+<g id="m-teddies-1" fill="currentColor"><circle cx="6.6" cy="6.6" r="3.1"/><circle cx="17.4" cy="6.6" r="3.1"/><circle cx="12" cy="12" r="6"/><ellipse cx="12" cy="8.4" rx="3.4" ry="3.8"/><ellipse cx="12" cy="19" rx="6.4" ry="4.6"/><ellipse cx="12" cy="20" rx="3.6" ry="2.4" fill="var(--cream)"/><circle cx="10.2" cy="7.8" r=".8" fill="var(--purple-900)"/><circle cx="13.8" cy="7.8" r=".8" fill="var(--purple-900)"/><circle cx="12" cy="9.6" r=".9" fill="var(--purple-900)"/></g>
+<g id="m-teddies-2" fill="currentColor"><circle cx="6.3" cy="7.4" r="3.4"/><circle cx="17.7" cy="7.4" r="3.4"/><circle cx="12" cy="13.6" r="7.6"/><ellipse cx="12" cy="16" rx="3.3" ry="2.4" fill="var(--cream)"/><path d="M12 19.6c-2.2-1.6-3.6-2.6-3.6-4a1.9 1.9 0 0 1 3.6-.8 1.9 1.9 0 0 1 3.6.8c0 1.4-1.4 2.4-3.6 4z" fill="var(--pink-500)"/></g>
+<g id="m-teddies-3" fill="currentColor"><circle cx="6.3" cy="7.4" r="3.4"/><circle cx="17.7" cy="7.4" r="3.4"/><circle cx="12" cy="14" r="7.6"/><ellipse cx="12" cy="16.4" rx="3.3" ry="2.4" fill="var(--cream)"/><circle cx="9.6" cy="12.8" r=".9" fill="var(--purple-900)"/><circle cx="14.4" cy="12.8" r=".9" fill="var(--purple-900)"/><path d="M13.4 6.6c1.4-1.6 3.4-1.3 3.6.6.2 1.8-1.7 3.2-3.6 3.4z" fill="var(--pink-500)"/><path d="M10.6 6.6C9.2 5 7.2 5.3 7 7.2c-.2 1.8 1.7 3.2 3.6 3.4z" fill="var(--pink-500)"/></g>
+
+<g id="m-gems-0" fill="currentColor"><path d="M12 2.4 22 9.6 12 21.6 2 9.6z" opacity=".55"/><path d="M12 2.4 22 9.6 12 12z"/><path d="M12 2.4 2 9.6 12 12z" opacity=".7"/><path d="M12 12v9.6L2 9.6z" opacity=".45"/><path d="M12 12v9.6L22 9.6z" opacity=".6"/></g>
+<g id="m-gems-1" fill="currentColor"><path d="M7.4 3h9.2l4.4 5.6-9 12.4-9-12.4z" opacity=".5"/><path d="M7.4 3h9.2L12 8.6z"/><path d="M7.4 3 3 8.6h9z" opacity=".7"/><path d="M12 8.6v12.4L3 8.6z" opacity=".45"/><path d="M12 8.6l9 0-4.4 5.6z" opacity=".55"/><path d="M12 8.6h9l-4.4-5.6z" opacity=".8"/></g>
+<g id="m-gems-2" fill="currentColor"><path d="M9.6 4.6h4.8L12 21.4z"/><path d="M9.6 4.6h4.8L12 12z" opacity=".7"/><path d="M3.6 10.4h3.6L5.4 21.4H2.4z" opacity=".55"/><path d="M16.8 10.4h3.6l1 11h-3z" opacity=".45"/><path d="M2.4 21.4h19.2" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></g>
+<g id="m-gems-3" fill="currentColor"><path d="M12 2.2c3.9 4.4 6 7.4 6 10a6 6 0 0 1-12 0c0-2.6 2.1-5.6 6-10z" opacity=".5"/><path d="M12 2.2c3.9 4.4 6 7.4 6 10a6 6 0 0 1-6 6z"/><path d="M12 2.2C8.1 6.6 6 9.6 6 12.2a6 6 0 0 0 6 6z" opacity=".65"/></g>
+
+<g id="m-letters-0" fill="currentColor"><rect x="2.4" y="5.4" width="19.2" height="13.2" rx="2"/><path d="M3.6 7 12 13.4 20.4 7" fill="none" stroke="var(--cream)" stroke-width="1.6" stroke-linecap="round"/><path d="M12 15.6c-1.6-1.3-2.7-2.1-2.7-3.2a1.4 1.4 0 0 1 2.7-.6 1.4 1.4 0 0 1 2.7.6c0 1.1-1.1 1.9-2.7 3.2z" fill="var(--pink-500)"/></g>
+<g id="m-letters-1" fill="currentColor"><path d="M2.4 8.6h19.2v9.6a1.4 1.4 0 0 1-1.4 1.4H3.8a1.4 1.4 0 0 1-1.4-1.4z"/><path d="M2.4 8.6 12 3.2l9.6 5.4z" opacity=".7"/><path d="M8.4 12.6h7.2M8.4 15.6h5.2" fill="none" stroke="var(--cream)" stroke-width="1.5" stroke-linecap="round"/></g>
+<g id="m-letters-2" fill="currentColor"><rect x="3" y="4.6" width="18" height="14.8" rx="2"/><path d="M4.2 6.2 12 12.6l7.8-6.4" fill="none" stroke="var(--cream)" stroke-width="1.5" stroke-linecap="round"/><circle cx="7.6" cy="16" r="1.5" fill="var(--pink-500)"/><circle cx="12" cy="16.8" r="1.2" fill="var(--pink-400)"/><circle cx="16.4" cy="16" r="1.5" fill="var(--pink-500)"/></g>
+<g id="m-letters-3" fill="currentColor"><path d="M5 3.4h11.4L21 8v12.6a1.4 1.4 0 0 1-1.4 1.4H5a1.4 1.4 0 0 1-1.4-1.4V4.8A1.4 1.4 0 0 1 5 3.4z" opacity=".65"/><path d="M8 12.6h8M8 15.8h5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M17.6 14.6c-1.3-1-2.1-1.7-2.1-2.6a1.1 1.1 0 0 1 2.1-.5 1.1 1.1 0 0 1 2.1.5c0 .9-.8 1.6-2.1 2.6z" fill="var(--pink-500)"/></g>
+
+<g id="m-smileys-0" fill="currentColor"><circle cx="12" cy="12" r="9.4"/><path d="M8 10.4c1-1.2 2.6-1.2 3.6 0M12.4 10.4c1-1.2 2.6-1.2 3.6 0" fill="none" stroke="var(--purple-900)" stroke-width="1.4" stroke-linecap="round"/><path d="M12 14.6c-1.6 0-2.6-.9-2.6-1.9 0-.8.8-1.2 1.6-1.2.5 0 .8.2 1 .5.2-.3.5-.5 1-.5.8 0 1.6.4 1.6 1.2 0 1-1 1.9-2.6 1.9z" fill="var(--pink-600)"/></g>
+<g id="m-smileys-1" fill="currentColor"><circle cx="12" cy="12" r="9.4"/><path d="M12 10.4c-1.4-1.6-3.4-1.4-3.4.4 0 1.6 1.6 2.2 3.4 2.2z" fill="var(--pink-600)"/><path d="M12 10.4c1.4-1.6 3.4-1.4 3.4.4 0 1.6-1.6 2.2-3.4 2.2z" fill="var(--pink-600)"/><path d="M9.4 16.4c1.6 1.4 3.6 1.4 5.2 0" fill="none" stroke="var(--purple-900)" stroke-width="1.4" stroke-linecap="round"/></g>
+<g id="m-smileys-2" fill="currentColor"><circle cx="12" cy="12" r="9.4"/><circle cx="8.8" cy="10.4" r="1.1" fill="var(--purple-900)"/><circle cx="15.2" cy="10.4" r="1.1" fill="var(--purple-900)"/><circle cx="5.6" cy="13.6" r="1.7" fill="var(--pink-500)" opacity=".65"/><circle cx="18.4" cy="13.6" r="1.7" fill="var(--pink-500)" opacity=".65"/><path d="M12 14.4c-1.8-.2-2.9-1-2.9-2.1 0-.9.9-1.4 1.7-1.4.5 0 .9.2 1.2.6.3-.4.7-.6 1.2-.6.8 0 1.7.5 1.7 1.4 0 1.1-1.1 1.9-2.9 2.1z" fill="var(--pink-600)"/></g>
+<g id="m-smileys-3" fill="currentColor"><circle cx="12" cy="12" r="9.4"/><circle cx="8.8" cy="10.6" r="1.1" fill="var(--purple-900)"/><circle cx="15.2" cy="10.6" r="1.1" fill="var(--purple-900)"/><path d="M7.8 15c1.2 1.8 2.6 2.6 4.2 2.6S15 16.8 16.2 15z" fill="var(--purple-800)"/><path d="M9.6 16.2c.7.6 1.4 1 2.4 1s1.7-.4 2.4-1z" fill="var(--pink-400)"/></g>
+
+<g id="m-butterflies-0" fill="currentColor"><path d="M12 12C10 6 6.6 3.6 4.6 5.2 2.6 6.8 4.6 11.4 12 12z"/><path d="M12 12c2-6 5.4-8.4 7.4-6.8s-1.6 6.2-7.4 6.8z"/><path d="M12 12c-1.8 5-4.6 6.6-6 5.2-1.4-1.4.8-4.6 6-5.2z"/><path d="M12 12c1.8 5 4.6 6.6 6 5.2 1.4-1.4-.8-4.6-6-5.2z" opacity=".7"/><rect x="11.2" y="5" width="1.6" height="14" rx=".8"/></g>
+<g id="m-butterflies-1" fill="currentColor"><ellipse cx="8.4" cy="9.6" rx="6" ry="4.6"/><ellipse cx="15.6" cy="9.6" rx="6" ry="4.6"/><rect x="11.1" y="3.6" width="1.8" height="17" rx=".9"/><path d="M5 8.4h6.8v3.4H5zM12.2 8.4H19v3.4h-6.8z" fill="var(--purple-900)" opacity=".7"/><circle cx="12" cy="5.2" r="2.4"/><path d="M10.6 3.4 9 1.4M13.4 3.4 15 1.4" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></g>
+<g id="m-butterflies-2" fill="currentColor"><path d="M12 11.6C9.6 5.4 6 3.4 4.4 5.6 2.8 7.8 6 12 12 11.6z"/><path d="M12 11.6c2.4-6.2 6-8.2 7.6-6 1.6 2.2-1.6 6.4-7.6 6z"/><path d="M12 11.6c-2 5-4.8 6.4-6 4.6-1.2-1.8 1.4-4.6 6-4.6z"/><path d="M12 11.6c2 5 4.8 6.4 6 4.6 1.2-1.8-1.4-4.6-6-4.6z" opacity=".65"/><rect x="11.2" y="5" width="1.6" height="13" rx=".8"/><circle cx="7.4" cy="7.6" r="1.5" fill="var(--cream)" opacity=".8"/><circle cx="16.6" cy="7.6" r="1.5" fill="var(--cream)" opacity=".8"/></g>
+<g id="m-butterflies-3" fill="currentColor"><ellipse cx="12" cy="13.6" rx="4.6" ry="6.4"/><rect x="10.8" y="4" width="2.4" height="16" rx="1.2"/><circle cx="12" cy="4.4" r="2.6"/><path d="M9 9.6h6v2.6H9zM9 13.8h6v2.6H9z" fill="var(--purple-900)" opacity=".7"/><path d="M10.2 2.6 8.4.6M13.8 2.6 15.6.6" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></g>
+
+<g id="m-treats-0" fill="currentColor"><path d="M5.2 12.6h13.6l-1.4 8.2a1.2 1.2 0 0 1-1.2 1H7.8a1.2 1.2 0 0 1-1.2-1z"/><path d="M12 3.4c3.6 0 6 1.8 6.4 4.6.2 1.4-.6 2.6-1.6 3.2H7.2C6.2 10.4 5.4 9.2 5.6 7.8 6 5 8.4 3.4 12 3.4z"/><circle cx="9.4" cy="6" r=".9" fill="var(--pink-600)"/><circle cx="14.6" cy="5.2" r=".9" fill="var(--rainbow-5)"/></g>
+<g id="m-treats-1" fill="currentColor"><ellipse cx="12" cy="8.4" rx="8" ry="4"/><path d="M4 8.4c0-2.2 3.6-4 8-4s8 1.8 8 4v1.4c0 2.2-3.6 4-8 4s-8-1.8-8-4z" opacity=".7"/><path d="M4.6 11.6c0 2 3.3 3.6 7.4 3.6s7.4-1.6 7.4-3.6v1.8c0 2-3.3 3.6-7.4 3.6s-7.4-1.6-7.4-3.6z"/><path d="M5.4 8.4h13.2" fill="none" stroke="var(--cream)" stroke-width="1.3" stroke-dasharray="1.6 1.6"/></g>
+<g id="m-treats-2" fill="currentColor"><path d="M12 2.4a9.6 9.6 0 1 0 0 19.2 9.6 9.6 0 0 0 0-19.2zm0 3.4a6.2 6.2 0 1 1 0 12.4 6.2 6.2 0 0 1 0-12.4z"/><path d="M12 8.6a3.4 3.4 0 1 1 0 6.8 3.4 3.4 0 0 1 0-6.8z" fill="var(--pink-400)"/><circle cx="8.4" cy="7" r=".9" fill="var(--cream)"/><circle cx="15.8" cy="6.6" r=".8" fill="var(--cream)"/></g>
+<g id="m-treats-3" fill="currentColor"><circle cx="12" cy="10.4" r="7.4"/><path d="M12 3c-2.6 1.6-2.6 4.2 0 5.8M12 3c2.6 1.6 2.6 4.2 0 5.8" fill="none" stroke="var(--cream)" stroke-width="1.3"/><path d="M12 3C9.4 4.6 9.4 7.2 12 8.8M12 3c2.6 1.6 2.6 4.2 0 5.8" fill="none" stroke="var(--pink-500)" stroke-width="1.4" stroke-linecap="round"/><rect x="11.2" y="17" width="1.6" height="4.6" rx=".8"/></g>
+
+<g id="m-pets-0" fill="currentColor"><path d="M5.4 9.6 3.6 4.2l4.6 2.6zM18.6 9.6l1.8-5.4-4.6 2.6z"/><path d="M12 6.6c5 0 8.4 3.2 8.4 7.2S17 20.4 12 20.4 3.6 17.6 3.6 13.8 7 6.6 12 6.6z"/><circle cx="9.2" cy="12.6" r=".95" fill="var(--purple-900)"/><circle cx="14.8" cy="12.6" r=".95" fill="var(--purple-900)"/><path d="M12 15.4c-1 0-1.7-.5-1.7-1.1 0-.6.6-.9 1.1-.9.4 0 .6.2.6.4 0-.2.2-.4.6-.4.5 0 1.1.3 1.1.9 0 .6-.7 1.1-1.7 1.1z" fill="var(--pink-600)"/><path d="M8.4 16.4h1.6M14 16.4h1.6" fill="none" stroke="var(--purple-900)" stroke-width="1" stroke-linecap="round"/></g>
+<g id="m-pets-1" fill="currentColor"><path d="M5.6 8.4c1.4-1.4 4-2.2 6.4-2.2s5 0.8 6.4 2.2c1.8 1.8 2.6 4.4 2.6 7 0 3.4-4 5.6-9 5.6s-9-2.2-9-5.6c0-2.6.8-5.2 2.6-7z"/><ellipse cx="4.6" cy="15.4" rx="2.6" ry="4" transform="rotate(-24 4.6 15.4)"/><ellipse cx="19.4" cy="15.4" rx="2.6" ry="4" transform="rotate(24 19.4 15.4)"/><circle cx="9.4" cy="13.4" r="1" fill="var(--purple-900)"/><circle cx="14.6" cy="13.4" r="1" fill="var(--purple-900)"/><ellipse cx="12" cy="16.4" rx="1.7" ry="1.3"/><path d="M10.4 17.6h3.2" fill="none" stroke="var(--purple-900)" stroke-width=".9" stroke-linecap="round"/></g>
+<g id="m-pets-2" fill="currentColor"><ellipse cx="12" cy="14.4" rx="6.6" ry="6.4"/><path d="M6.2 10.4 4.4 5.6l4.2 2.2zM17.8 10.4l1.8-4.8-4.2 2.2z" fill="var(--pink-300)"/><circle cx="9.4" cy="13.6" r="1" fill="var(--purple-900)"/><circle cx="14.6" cy="13.6" r="1" fill="var(--purple-900)"/><ellipse cx="12" cy="16.6" rx="1.5" ry="1.1"/><path d="M9.6 18.4c.8.8 1.6 1.2 2.4 1.2s1.6-.4 2.4-1.2" fill="none" stroke="var(--purple-900)" stroke-width=".9" stroke-linecap="round"/></g>
+<g id="m-pets-3" fill="currentColor"><ellipse cx="12" cy="15" rx="6.4" ry="6.2"/><ellipse cx="5.4" cy="8.2" rx="2.4" ry="3.8" transform="rotate(-28 5.4 8.2)"/><ellipse cx="18.6" cy="8.2" rx="2.4" ry="3.8" transform="rotate(28 18.6 8.2)"/><ellipse cx="12" cy="18.6" rx="3.4" ry="2.8" fill="var(--cream-2)"/><circle cx="9.4" cy="14.2" r="1" fill="var(--purple-900)"/><circle cx="14.6" cy="14.2" r="1" fill="var(--purple-900)"/><ellipse cx="12" cy="17" rx="1.5" ry="1.1"/><path d="M12 18.2v1.4" fill="none" stroke="var(--purple-900)" stroke-width=".9" stroke-linecap="round"/></g>
+
+<g id="m-notes-0" fill="currentColor"><path d="M9 15.4V5.2l9-1.8v10.2"/><path d="M9 5.2 18 3.4" fill="none" stroke="currentColor" stroke-width="1.6"/><ellipse cx="6.8" cy="16.2" rx="2.6" ry="2.1" transform="rotate(-18 6.8 16.2)"/><ellipse cx="15.8" cy="14.6" rx="2.6" ry="2.1" transform="rotate(-18 15.8 14.6)"/></g>
+<g id="m-notes-1" fill="currentColor"><path d="M11 17V4.4l7.4-1.6V15"/><path d="M11 4.4 18.4 2.8" fill="none" stroke="currentColor" stroke-width="1.5"/><ellipse cx="8.6" cy="17.8" rx="2.8" ry="2.2" transform="rotate(-18 8.6 17.8)"/></g>
+<g id="m-notes-2" fill="currentColor"><path d="M6 16.6V6.2L16.4 3v13.6"/><path d="M6 6.2 16.4 3" fill="none" stroke="currentColor" stroke-width="1.6"/><ellipse cx="3.8" cy="17.4" rx="2.6" ry="2.1" transform="rotate(-18 3.8 17.4)"/><ellipse cx="14.2" cy="17.2" rx="2.6" ry="2.1" transform="rotate(-18 14.2 17.2)"/></g>
+<g id="m-notes-3" fill="currentColor"><path d="M13 18V6.4C11 4.6 8 4.6 5.6 6c2.8.6 4.6 2 5 4.2-2-.8-4-.6-5.6.6 2.6 1.2 5.2 1.6 8 1.2z"/><ellipse cx="10.6" cy="18.8" rx="2.8" ry="2.2" transform="rotate(-18 10.6 18.8)"/></g>
+
+<g id="m-stars-0" fill="currentColor"><path d="m12 2.2 3 6.4 7 1-5.1 5 1.2 7-6.1-3.3L5.9 21.6l1.2-7-5.1-5 7-1z"/></g>
+<g id="m-stars-1" fill="currentColor"><path d="M15.4 2.6a9.6 9.6 0 1 0 6 14.2A10.4 10.4 0 0 1 15.4 2.6z"/></g>
+<g id="m-stars-2" fill="currentColor"><path d="m5.4 3.2 1.8 4.6 4.6 1.8-4.6 1.8-1.8 4.6-1.8-4.6L1 9.6l4.6-1.8z"/><path d="M9.6 12.8h12.2l-3.6 2.6v4.4l-2.4 1.4v-4.4z" opacity=".7"/><path d="M19.4 15.4h4.4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></g>
+<g id="m-stars-3" fill="currentColor"><path d="m12 1.8 2.4 7.8 7.8 2.4-7.8 2.4-2.4 7.8-2.4-7.8L1.8 12l7.8-2.4z"/></g>
+
+<g id="m-fairies-0" fill="currentColor"><path d="M11 9.4C8.6 5.2 4.6 3.6 3 5.8 1.6 7.8 4.6 10.6 11 10.6z" opacity=".8"/><path d="M13 9.4c2.4-4.2 6.4-5.8 8-3.6 1.4 2-1.6 4.8-8 4.8z" opacity=".8"/><circle cx="12" cy="5.6" r="3.2"/><path d="M12 9.4c2.2 0 3.6 1.8 3.6 4.2S14 17.4 12 17.4s-3.6-2-3.6-3.8S9.8 9.4 12 9.4z"/><path d="M9.4 17.4h5.2l-.8 3.2h-3.6z"/></g>
+<g id="m-fairies-1" fill="currentColor"><ellipse cx="6.2" cy="9.4" rx="4.2" ry="2.6" transform="rotate(-26 6.2 9.4)"/><ellipse cx="17.8" cy="9.4" rx="4.2" ry="2.6" transform="rotate(26 17.8 9.4)"/><circle cx="12" cy="15.4" r="3.4"/><circle cx="10.5" cy="14.4" r=".7" fill="var(--purple-900)"/><circle cx="13.5" cy="14.4" r=".7" fill="var(--purple-900)"/></g>
+<g id="m-fairies-2" fill="currentColor"><path d="M10.6 12.4C7.4 9.8 4 9.6 3.2 11.6c-.8 1.8 2 3.2 7.4 2.4z"/><path d="M13.4 12.4c3.2-2.6 6.6-2.8 7.4-.8.8 1.8-2 3.2-7.4 2.4z"/><circle cx="12" cy="8.6" r="3"/><path d="M12 12c2 0 3.4 1.6 3.4 3.8s-1.4 3.4-3.4 3.4-3.4-1.2-3.4-3.4S10 12 12 12z"/><path d="M15.4 17.6 21.6 5" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="m21.6 5 1.6 1.6-2.6.8z"/></g>
+<g id="m-fairies-3" fill="currentColor"><path d="M12 20.4C8.4 17 3 13.4 3 9.2 3 5.8 7 4.2 9.6 6.4L12 8.8l2.4-2.4C17 4.2 21 5.8 21 9.2c0 4.2-5.4 7.8-9 11.2z" opacity=".8"/><path d="M6.6 12.8C4.4 11 2.4 9.2 2.4 7.2c0-1.8 1.8-2.6 3.2-1.4l1 .8z"/><path d="M17.4 12.8c2.2-1.8 4.2-3.6 4.2-5.6 0-1.8-1.8-2.6-3.2-1.4l-1 .8z" opacity=".7"/></g>
+
+<g id="m-candy-0" fill="currentColor"><ellipse cx="7.4" cy="12" rx="4.4" ry="6"/><ellipse cx="16.6" cy="12" rx="4.4" ry="6"/><path d="M4.4 7.6 1.6 3.6l4.6 1.4zM4.4 16.4l-2.8 4 4.6-1.4zM19.6 7.6l2.8-4-4.6 1.4zM19.6 16.4l2.8 4-4.6-1.4z"/><rect x="11" y="5" width="2" height="14" rx="1"/></g>
+<g id="m-candy-1" fill="currentColor"><path d="M12 3.4a9.4 9.4 0 0 1 9.4 9.4H2.6A9.4 9.4 0 0 1 12 3.4z"/><path d="M12 3.4a9.4 9.4 0 0 0-9.4 9.4h4.6A4.8 4.8 0 0 1 12 3.4z" fill="var(--pink-100)"/><ellipse cx="8.6" cy="8.6" rx=".9" ry="1.6" transform="rotate(-24 8.6 8.6)"/><ellipse cx="13.4" cy="6.8" rx=".9" ry="1.6" transform="rotate(18 13.4 6.8)"/><ellipse cx="15.4" cy="10.2" rx=".9" ry="1.6" transform="rotate(-12 15.4 10.2)"/></g>
+<g id="m-candy-2" fill="currentColor"><path d="M6.6 12.6h10.8L12 21.8z"/><path d="M7.2 8.6a4.8 4.8 0 0 1 9.6 0z" fill="var(--pink-400)"/><path d="M9.6 3.2a2.6 2.6 0 0 1 4.8 0z" fill="var(--rainbow-3)"/><path d="M8.4 12.2h7.2l-3.6 5.4z" opacity=".55"/><path d="M7.2 12.6h10.8" fill="none" stroke="var(--cream-2)" stroke-width="1.2"/></g>
+<g id="m-candy-3" fill="currentColor"><path d="M12 21.4C5.6 16.6 2.4 13.2 2.4 9.6A5.6 5.6 0 0 1 12 6.2a5.6 5.6 0 0 1 9.6 3.4c0 3.6-3.2 7-9.6 11.8z"/><path d="M7.6 9.2c.8-1.6 2.4-2.4 4-2.6-1.2 1-1.8 2.2-2 3.8-1.4.2-2.6-.2-3.4-1 .2 0 .8-.1 1.4-.2z" fill="var(--cream)"/><path d="M14.6 13.4c1.4.4 2.6 1.4 3 2.6-1-.4-2-.6-3-.6-.8-.6-1-1.4 0-2z" fill="var(--cream)" opacity=".8"/></g>
+
+<g id="m-mushrooms-0" fill="currentColor"><path d="M12 3.4c5 0 8.8 3 8.8 6.8H3.2c0-3.8 3.8-6.8 8.8-6.8z"/><path d="M9 10.2h6c0 3.6-.8 6-1.2 8.6h-3.6C9.8 16.2 9 13.8 9 10.2z" fill="var(--cream-2)"/><circle cx="8.6" cy="6.8" r="1.4" fill="var(--cream)"/><circle cx="15.4" cy="7.4" r="1.1" fill="var(--cream)"/></g>
+<g id="m-mushrooms-1" fill="currentColor"><path d="M8.6 5.4c3.8 0 6.8 2.2 6.8 5H1.8c0-2.8 3-5 6.8-5z"/><path d="M6.6 10.4h4c0 2.8-.6 4.6-.9 6.6H7.5c-.3-2-.9-3.8-.9-6.6z" fill="var(--cream-2)"/><path d="M17.4 10.2c3 0 5.4 1.8 5.4 4h-6.6c0-2.2-2.2-4-5.4-4z" opacity=".8"/><path d="M15.6 14.2h3.2c0 2.2-.5 3.6-.8 5.2h-1.6c-.3-1.6-.8-3-.8-5.2z" fill="var(--cream-2)"/></g>
+<g id="m-mushrooms-2" fill="currentColor"><path d="M4 21.4C4 12 8 4 13.6 2.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><ellipse cx="8.4" cy="9.6" rx="3.4" ry="2.4" transform="rotate(-32 8.4 9.6)"/><ellipse cx="10.6" cy="16" rx="3.2" ry="2.2" transform="rotate(28 10.6 16)"/><ellipse cx="16.4" cy="5.6" rx="2.6" ry="1.8" transform="rotate(-48 16.4 5.6)"/><ellipse cx="5.4" cy="18.4" rx="2.8" ry="1.9" transform="rotate(16 5.4 18.4)"/></g>
+<g id="m-mushrooms-3" fill="currentColor"><path d="M1.6 4.4c3.2 6 7.4 9.4 12 9.4 3 0 6-1.4 8.8-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M2.4 5.6c1.2 1 1.8 2.4 1.8 3.8l2.4-.8c-.2-1.6-.8-3-1.8-4.2zM21.6 5.6c-1.2 1-1.8 2.4-1.8 3.8l-2.4-.8c.2-1.6.8-3 1.8-4.2z"/><circle cx="12" cy="14.6" r="2.4"/><path d="M12 17v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="6.4" cy="19.6" r="1.7"/><circle cx="17.6" cy="19.6" r="1.7"/></g>
+</defs></svg>
+<main>
+
+  <section id="hero-meadow" data-theme="hero-meadow">
+    <div class="layer-backdrop" aria-hidden="true"></div>
+    <div class="layer-mid" aria-hidden="true" data-decor="rainbows,hearts,bows,sparkles,bunnies"></div>
+    <div class="layer-sayings">
+        <span class="saying saying--spot saying--a11y" data-saying-a11y="true" tabindex="0" data-saying-index="0" data-sx="0.2" data-sy="0.07" data-sop="1" data-saying-spot="rainbow-arc" style="--sx:0.2;--sy:0.07;--ny:0.06;--srot:-3deg">you are great!</span>
+        <span class="saying saying--spot" data-saying-spot="rainbow-arc" style="--sx:0.7;--sy:0.06;--ny:0.06;--srot:3deg">wow, wonderful!</span>
+        <span class="saying saying--spot" data-saying-spot="margin" style="--sx:0.05;--sy:0.42;--ny:0.06;--srot:-5deg">So glad you&rsquo;re here!</span>
+        <span class="saying saying--spot" data-saying-spot="margin" style="--sx:0.94;--sy:0.58;--ny:0.93;--srot:5deg">Sending you a hug!</span>
+    </div>
+    <div class="layer-content">
+      <h1>Hello, You Soft Little Marshmallow!</h1>
+      <p>Welcome to the coziest corner of the internet, where everything is pink, everything is purple, and everything here has been delighted to see you all day.</p>
+    </div>
+  </section>
+
+  <section id="bunny-meadow" data-theme="bunny-meadow">
+    <div class="layer-backdrop" aria-hidden="true"></div>
+    <div class="layer-mid" aria-hidden="true" data-decor="bunnies,mushrooms,flowers,garlands,sakura"></div>
+    <div class="layer-sayings">
+        <span class="saying saying--spot saying--a11y" data-saying-a11y="true" tabindex="0" data-saying-index="9" data-sx="0.18" data-sy="0.08" data-sop="1" data-saying-spot="bunny-ear" style="--sx:0.18;--sy:0.08;--ny:0.06;--srot:-4deg">Bunnies say hi!</span>
+        <span class="saying saying--spot" data-saying-spot="bunny-ear" style="--sx:0.72;--sy:0.1;--ny:0.07;--srot:4deg">Have the sweetest day!</span>
+        <span class="saying saying--spot" data-saying-spot="under-flower" style="--sx:0.12;--sy:0.86;--ny:0.9;--srot:3deg">Peekaboo! I see you!</span>
+        <span class="saying saying--spot" data-saying-spot="under-flower" style="--sx:0.8;--sy:0.9;--ny:0.92;--srot:-3deg">Please be loved today!</span>
+    </div>
+    <div class="layer-content">
+      <h2>The Bunny Meadow</h2>
+      <p>Soft ears keep popping up out of the long grass, and every single bunny hops a little closer, purely so it can say hello to you properly.</p>
+    </div>
+  </section>
+
+  <section id="heart-wall" data-theme="heart-wall">
+    <div class="layer-backdrop" aria-hidden="true"></div>
+    <div class="layer-mid" aria-hidden="true" data-decor="hearts,love-letters,kissing-smileys,sparkles"></div>
+    <div class="layer-sayings">
+        <span class="saying saying--spot saying--a11y" data-saying-a11y="true" tabindex="0" data-saying-index="1" data-sx="0.05" data-sy="0.2" data-sop="1" data-saying-spot="margin" style="--sx:0.05;--sy:0.2;--ny:0.055;--srot:-6deg">I love you!</span>
+        <span class="saying saying--spot" data-saying-spot="margin" style="--sx:0.1;--sy:0.5;--ny:0.93;--srot:6deg">Keep it up!</span>
+        <span class="saying saying--spot" data-saying-spot="margin" style="--sx:0.05;--sy:0.8;--ny:0.06;--srot:-4deg">You&rsquo;re doing amazing!</span>
+        <span class="saying saying--spot" data-saying-spot="margin" style="--sx:0.94;--sy:0.24;--ny:0.93;--srot:4deg">You sparkle!</span>
+        <span class="saying saying--spot" data-saying-spot="margin" style="--sx:0.9;--sy:0.56;--ny:0.06;--srot:-5deg">You&rsquo;re my favourite!</span>
+        <span class="saying saying--spot" data-saying-spot="margin" style="--sx:0.93;--sy:0.82;--ny:0.93;--srot:5deg">You make me smile!</span>
+        <span class="saying saying--spot" data-saying-spot="margin" style="--sx:0.5;--sy:0.07;--ny:0.06;--srot:-2deg">Proud of you!</span>
+    </div>
+    <div class="layer-content">
+      <h2>The Heart Wall</h2>
+      <p>This wall is packed with enormous hearts, folded love letters and kissy smileys, and there is still a whole lot of room left for yours.</p>
+    </div>
+  </section>
+
+  <section id="candy-shelf" data-theme="candy-shelf">
+    <div class="layer-backdrop" aria-hidden="true"></div>
+    <div class="layer-mid" aria-hidden="true" data-decor="treats,candy,kittens-puppies,hearts"></div>
+    <div class="layer-sayings">
+        <span class="saying saying--spot saying--a11y" data-saying-a11y="true" tabindex="0" data-saying-index="7" data-sx="0.06" data-sy="0.3" data-sop="1" data-saying-spot="margin" style="--sx:0.06;--sy:0.3;--ny:0.06;--srot:-4deg">Cuteness level: maximum!</span>
+        <span class="saying saying--spot" data-saying-spot="margin" style="--sx:0.92;--sy:0.44;--ny:0.93;--srot:4deg">You&rsquo;re a star!</span>
+        <span class="saying saying--spot" data-saying-spot="margin" style="--sx:0.5;--sy:0.9;--ny:0.91;--srot:2deg">Rainbows for your whole week!</span>
+    </div>
+    <div class="layer-content">
+      <h2>The Candy Shelf</h2>
+      <p>Rows of macarons, donuts, ice creams and watermelon slices are stacked up here, while a kitten and a puppy peek in from the edges.</p>
+    </div>
+  </section>
+
+  <section id="rainbow-sky" data-theme="rainbow-sky">
+    <div class="layer-backdrop" aria-hidden="true"></div>
+    <div class="layer-mid" aria-hidden="true" data-decor="stars,moons,fairies,gems,sparkles"></div>
+    <div class="layer-sayings">
+        <span class="saying saying--spot saying--a11y" data-saying-a11y="true" tabindex="0" data-saying-index="18" data-sx="0.07" data-sy="0.22" data-sop="1" data-saying-spot="margin" style="--sx:0.07;--sy:0.22;--ny:0.055;--srot:-5deg">You&rsquo;re doing better than you think!</span>
+        <span class="saying saying--spot" data-saying-spot="margin" style="--sx:0.9;--sy:0.7;--ny:0.93;--srot:5deg">Ten tiny hugs!</span>
+        <span class="saying saying--spot" data-saying-spot="margin" style="--sx:0.38;--sy:0.07;--ny:0.07;--srot:-3deg">Keep being wonderful!</span>
+    </div>
+    <div class="layer-content">
+      <h2>The Rainbow Sky</h2>
+      <p>Tonight the sky fills with stars, moons and shooting stars, and tiny fairies drift past the biggest rainbow in the whole meadow.</p>
+    </div>
+  </section>
+
+  <section id="cloud-garden" data-theme="cloud-garden">
+    <div class="layer-backdrop" aria-hidden="true"></div>
+    <div class="layer-mid" aria-hidden="true" data-decor="butterflies,bees,music-notes,teddies,sakura"></div>
+    <div class="layer-sayings">
+        <span class="saying saying--spot saying--a11y" data-saying-a11y="true" tabindex="0" data-saying-index="13" data-sx="0.06" data-sy="0.46" data-sop="1" data-saying-spot="margin" style="--sx:0.06;--sy:0.46;--ny:0.06;--srot:-5deg">You light up the room!</span>
+        <span class="saying saying--spot" data-saying-spot="margin" style="--sx:0.92;--sy:0.32;--ny:0.93;--srot:5deg">Your smile is magic!</span>
+        <span class="saying saying--spot" data-saying-spot="margin" style="--sx:0.3;--sy:0.92;--ny:0.92;--srot:3deg">You&rsquo;re somebody&rsquo;s favourite!</span>
+    </div>
+    <div class="layer-content">
+      <h2>The Cloud Garden</h2>
+      <p>Butterflies, bees and little music notes float through the lavender clouds, and a teddy bear is always somewhere nearby, waving at you.</p>
+    </div>
+  </section>
+
+  <section id="sparkle-signoff" data-theme="sparkle-signoff">
+    <div class="layer-backdrop" aria-hidden="true"></div>
+    <div class="layer-mid" aria-hidden="true" data-decor="sparkles,hearts,confetti"></div>
+    <div class="layer-sayings">
+        <span class="saying saying--spot saying--a11y" data-saying-a11y="true" tabindex="0" data-saying-index="1" data-sx="0.05" data-sy="0.26" data-sop="1" data-saying-spot="margin" style="--sx:0.05;--sy:0.26;--ny:0.055;--srot:-5deg">I love you!</span>
+        <span class="saying saying--spot" data-saying-spot="margin" style="--sx:0.94;--sy:0.36;--ny:0.93;--srot:5deg">you are great!</span>
+        <span class="saying saying--spot" data-saying-spot="margin" style="--sx:0.5;--sy:0.08;--ny:0.07;--srot:-2deg">wow, wonderful!</span>
+        <span class="saying saying--spot" data-saying-spot="margin" style="--sx:0.5;--sy:0.93;--ny:0.93;--srot:2deg">Proud of you!</span>
+    </div>
+    <div class="layer-content">
+      <h2>You're So Cute</h2>
+      <p>Sparkles, hearts and confetti for the finale, and thank you for visiting. Please take the entire meadow home with you.</p>
+    </div>
+  </section>
+
+</main>
+<div class="layer-bunnies" id="bunny-layer" aria-hidden="true"></div>
+<div class="layer-sayings-fx" id="saying-fx" aria-hidden="true"></div>
+<!-- The click bloom host. One viewport-fixed, pointer-transparent layer
+     outside every section, because a burst is placed from the pointer's
+     clientX/clientY and must never be clipped or re-stacked by a section
+     boundary. It is a layer of its own rather than a corner of the saying
+     host so the two transient systems stay independently countable. -->
+<div class="layer-bloom" id="bloom-layer" aria-hidden="true"></div>
+<!-- The cuteness slider. Native range semantics are inherited on purpose:
+     the card is chrome around the control, never a replacement for it. -->
+<div class="cuteness" id="cuteness-control">
+  <label class="cuteness__label" for="cuteness-slider">Cuteness</label>
+  <span class="cuteness__readout" id="cuteness-readout" aria-hidden="true">overwhelming &middot; 529</span>
+  <input class="cuteness__range" id="cuteness-slider" type="range" min="0" max="100" step="1"
+         value="100" aria-valuetext="overwhelming &mdash; 529 decorations">
+</div>
+<script>
+(function () {
+  'use strict';
+
+  /* ==================================================================
+     1. SEEDED RANDOMNESS
+     Every descriptor is a pure function of (category key, element index),
+     so a reload paints the same meadow and a category can be re-derived
+     at any density without drifting.
+     ================================================================== */
+  function hashKey(str) {
+    let h = 2166136261;
+    for (let i = 0; i < str.length; i += 1) {
+      h ^= str.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return h >>> 0;
+  }
+
+  function mulberry32(seed) {
+    let a = seed >>> 0;
+    return function () {
+      a = (a + 0x6d2b79f5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  function rngFor(key, i) {
+    return mulberry32((hashKey(key) ^ Math.imul(i + 1, 2654435761)) >>> 0);
+  }
+
+  var round3 = function (v) { return Math.round(v * 1000) / 1000; };
+
+  /* ==================================================================
+     2. SECTIONS AND PLACEMENT BANDS
+     Decoration only ever lands inside these bands, so the centred
+     `.layer-content` column stays clear and body text stays legible.
+     Below the wide breakpoint the text spans the full width, so the
+     edge strips are dropped and only the top and bottom bands remain.
+     ================================================================== */
+  var SECTION_IDS = [
+    'hero-meadow', 'bunny-meadow', 'heart-wall', 'candy-shelf',
+    'rainbow-sky', 'cloud-garden', 'sparkle-signoff'
+  ];
+  var WIDE_BREAKPOINT = 700;
+
+  var WIDE_LAYOUT = {
+    column: { x0: 0.14, x1: 0.86, y0: 0.28, y1: 0.72 },
+    bands: [
+      { x0: 0.01, x1: 0.12, y0: 0.28, y1: 0.72 },
+      { x0: 0.88, x1: 0.99, y0: 0.28, y1: 0.72 },
+      { x0: 0.02, x1: 0.98, y0: 0.01, y1: 0.26 },
+      { x0: 0.02, x1: 0.98, y0: 0.74, y1: 0.99 }
+    ]
+  };
+
+  var NARROW_LAYOUT = {
+    column: { x0: 0, x1: 1, y0: 0.16, y1: 0.84 },
+    bands: [
+      { x0: 0.02, x1: 0.98, y0: 0.01, y1: 0.14 },
+      { x0: 0.02, x1: 0.98, y0: 0.86, y1: 0.99 }
+    ]
+  };
+
+  function layoutAt(width) {
+    return width >= WIDE_BREAKPOINT ? WIDE_LAYOUT : NARROW_LAYOUT;
+  }
+
+  /* A deliberately small depth set: hundreds of stacked layers would only
+     cost paint time. Depth reads through opacity and scale instead. */
+  var DEPTHS = [1, 2, 3, 4];
+
+  /* ==================================================================
+     3. THE CLOSED ROSTER — nineteen categories, as data
+     key        stable id, also the `data-cat` value
+     name       human display name
+     floor      approved page-total floor; raising density is this number
+     sections   {'all': cross-cutting} or { sectionId: weight }
+variants   distinct shape variants (must match the CSS / sprite count)
+     size       base box in px before the seeded scale
+     tilt       max absolute seeded rotation in degrees
+     tints      palette variables the seeded pass draws from
+     strategy   'css' (clip-path / gradient shapes) or 'svg' (sprite mark)
+     interactive true only when the motif may carry a saying (task 5),
+                 which is the sole reason pointer events are turned on
+     layer      'viewport' for the one category that must cross section
+                 boundaries (the hopping bunnies); absent means the section
+                 band's own themed layer
+     ================================================================== */
+  var ROSTER = [
+    {
+      key: 'sparkles', name: 'Sparkles', floor: 60, sections: 'all',
+      variants: 4, size: 18, tilt: 180, strategy: 'css', interactive: false,
+      tints: ['var(--cream)', 'var(--rainbow-3)', 'var(--pink-100)', 'var(--rainbow-5)']
+    },
+    {
+      key: 'hearts', name: 'Hearts', floor: 50,
+      sections: { 'heart-wall': 0.6, 'sparkle-signoff': 0.2, 'hero-meadow': 0.2 },
+      variants: 4, size: 26, tilt: 60, strategy: 'css', interactive: true,
+      tints: ['var(--pink-400)', 'var(--pink-500)', 'var(--pink-300)', 'var(--pink-700)']
+    },
+    {
+      key: 'flowers', name: 'Flowers', floor: 25, sections: { 'bunny-meadow': 1 },
+      variants: 4, size: 40, tilt: 45, strategy: 'css', interactive: false,
+      tints: ['var(--pink-300)', 'var(--rainbow-2)', 'var(--purple-300)', 'var(--rainbow-7)']
+    },
+    {
+      key: 'bunnies', name: 'Bunny rabbits', floor: 24,
+      sections: { 'hero-meadow': 0.4, 'bunny-meadow': 0.6 },
+      variants: 4, size: 34, tilt: 24, strategy: 'svg', interactive: false,
+      layer: 'viewport',
+      tints: ['var(--pink-300)', 'var(--rainbow-7)', 'var(--purple-200)', 'var(--pink-200)']
+    },
+    {
+      key: 'rainbows', name: 'Rainbows', floor: 10, sections: { 'hero-meadow': 1 },
+      variants: 4, size: 150, tilt: 12, strategy: 'css', interactive: true,
+      tints: ['var(--cream)', 'var(--pink-100)', 'var(--purple-100)', 'var(--rainbow-3)']
+    },
+    {
+      key: 'sakura', name: 'Sakura & petal drift', floor: 60, sections: 'all',
+      variants: 4, size: 16, tilt: 180, strategy: 'svg', interactive: false,
+      tints: ['var(--pink-200)', 'var(--pink-300)', 'var(--purple-200)', 'var(--pink-100)']
+    },
+    {
+      key: 'teddies', name: 'Teddy bears & plushies', floor: 12, sections: { 'cloud-garden': 1 },
+      variants: 4, size: 34, tilt: 30, strategy: 'svg', interactive: true,
+      tints: ['var(--rainbow-2)', 'var(--pink-200)', 'var(--cream-2)', 'var(--rainbow-3)']
+    },
+    {
+      key: 'gems', name: 'Gems & crystals', floor: 25, sections: { 'rainbow-sky': 1 },
+      variants: 4, size: 24, tilt: 40, strategy: 'svg', interactive: false,
+      tints: ['var(--rainbow-5)', 'var(--rainbow-6)', 'var(--purple-300)', 'var(--rainbow-7)']
+    },
+    {
+      key: 'letters', name: 'Love letters & envelopes', floor: 10, sections: { 'heart-wall': 1 },
+      variants: 4, size: 32, tilt: 18, strategy: 'svg', interactive: true,
+      tints: ['var(--pink-100)', 'var(--cream)', 'var(--purple-100)', 'var(--pink-200)']
+    },
+    {
+      key: 'smileys', name: 'Kissing smileys', floor: 18, sections: { 'heart-wall': 1 },
+      variants: 4, size: 28, tilt: 24, strategy: 'svg', interactive: true,
+      tints: ['var(--rainbow-3)', 'var(--pink-300)', 'var(--rainbow-2)', 'var(--cream-2)']
+    },
+    {
+      key: 'bows', name: 'Bows & ribbons', floor: 40, sections: { 'hero-meadow': 1 },
+      variants: 4, size: 34, tilt: 40, strategy: 'css', interactive: true,
+      tints: ['var(--pink-400)', 'var(--pink-500)', 'var(--rainbow-1)', 'var(--pink-600)']
+    },
+    {
+      key: 'butterflies', name: 'Butterflies & bees', floor: 24, sections: { 'cloud-garden': 1 },
+      variants: 4, size: 30, tilt: 35, strategy: 'svg', interactive: false,
+      tints: ['var(--purple-400)', 'var(--rainbow-6)', 'var(--pink-300)', 'var(--rainbow-4)']
+    },
+    {
+      key: 'treats', name: 'Treats', floor: 30, sections: { 'candy-shelf': 1 },
+      variants: 4, size: 34, tilt: 30, strategy: 'svg', interactive: true,
+      tints: ['var(--pink-200)', 'var(--rainbow-3)', 'var(--cream-2)', 'var(--pink-300)']
+    },
+    {
+      key: 'pets', name: 'Kittens & puppies', floor: 16, sections: { 'candy-shelf': 1 },
+      variants: 4, size: 36, tilt: 22, strategy: 'svg', interactive: true,
+      tints: ['var(--rainbow-2)', 'var(--pink-200)', 'var(--cream-2)', 'var(--purple-200)']
+    },
+    {
+      key: 'notes', name: 'Music notes', floor: 20, sections: { 'cloud-garden': 1 },
+      variants: 4, size: 26, tilt: 25, strategy: 'svg', interactive: true,
+      tints: ['var(--purple-600)', 'var(--purple-800)', 'var(--pink-600)', 'var(--purple-500)']
+    },
+    {
+      key: 'stars', name: 'Stars, moons & shooting stars', floor: 35, sections: { 'rainbow-sky': 1 },
+      variants: 4, size: 24, tilt: 180, strategy: 'svg', interactive: true,
+      tints: ['var(--cream)', 'var(--rainbow-3)', 'var(--purple-200)', 'var(--rainbow-7)']
+    },
+    {
+      key: 'fairies', name: 'Fairies & tiny wings', floor: 10, sections: { 'rainbow-sky': 1 },
+      variants: 4, size: 30, tilt: 30, strategy: 'svg', interactive: false,
+      tints: ['var(--purple-200)', 'var(--rainbow-7)', 'var(--pink-100)', 'var(--rainbow-5)']
+    },
+    {
+      key: 'candy', name: 'Candy, watermelon & ice cream', floor: 30, sections: { 'candy-shelf': 1 },
+      variants: 4, size: 34, tilt: 35, strategy: 'svg', interactive: true,
+      tints: ['var(--pink-400)', 'var(--rainbow-4)', 'var(--rainbow-2)', 'var(--purple-300)']
+    },
+    {
+      key: 'mushrooms', name: 'Mushrooms, vines & garlands', floor: 30, sections: { 'bunny-meadow': 1 },
+      variants: 4, size: 32, tilt: 25, strategy: 'svg', interactive: false,
+      tints: ['var(--pink-600)', 'var(--pink-500)', 'var(--pink-700)', 'var(--rainbow-1)']
+    }
+  ];
+
+  var BY_KEY = {};
+  for (var r = 0; r < ROSTER.length; r += 1) BY_KEY[ROSTER[r].key] = ROSTER[r];
+  var FLOOR_TOTAL = ROSTER.reduce(function (sum, cat) { return sum + cat.floor; }, 0);
+
+  function category(key) { return BY_KEY[key]; }
+
+  /* ==================================================================
+     4. DISTRIBUTION
+     Largest-remainder apportionment, so a category's count is split
+     across its homes exactly and no section is starved.
+     ================================================================== */
+  function evenWeights() {
+    var out = {};
+    for (var i = 0; i < SECTION_IDS.length; i += 1) out[SECTION_IDS[i]] = 1;
+    return out;
+  }
+
+  function splitCounts(weights, total) {
+    var ids = Object.keys(weights);
+    if (total <= 0 || ids.length === 0) return {};
+    var weightSum = ids.reduce(function (sum, id) { return sum + weights[id]; }, 0) || 1;
+    var out = {};
+    var order = [];
+    var i;
+    for (i = 0; i < ids.length; i += 1) {
+      var exact = (total * weights[ids[i]]) / weightSum;
+      out[ids[i]] = Math.floor(exact);
+      order.push({ i: i, frac: exact - Math.floor(exact) });
+    }
+    order.sort(function (a, b) { return b.frac - a.frac || a.i - b.i; });
+    var assigned = ids.reduce(function (sum, id) { return sum + out[id]; }, 0);
+    var k = 0;
+    while (assigned < total) {
+      out[ids[order[k % order.length].i]] += 1;
+      assigned += 1;
+      k += 1;
+    }
+    return out;
+  }
+
+  function planAt(density) {
+    var d = Math.min(1, Math.max(0, density));
+    var plan = { density: d, byCategory: {} };
+    for (var i = 0; i < ROSTER.length; i += 1) {
+      var cat = ROSTER[i];
+      var total = Math.round(cat.floor * d);
+      var weights = cat.sections === 'all' ? evenWeights() : cat.sections;
+      plan.byCategory[cat.key] = splitCounts(weights, total);
+    }
+    return plan;
+  }
+
+  function perCategory(plan) {
+    var out = {};
+    for (var i = 0; i < ROSTER.length; i += 1) {
+      var n = Object.values(plan.byCategory[ROSTER[i].key]).reduce(function (a, b) { return a + b; }, 0);
+      if (n > 0) out[ROSTER[i].key] = n;
+    }
+    return out;
+  }
+
+  function perSection(plan) {
+    var out = {};
+    var i;
+    for (i = 0; i < SECTION_IDS.length; i += 1) out[SECTION_IDS[i]] = 0;
+    for (var key in plan.byCategory) {
+      var split = plan.byCategory[key];
+      for (var id in split) out[id] += split[id];
+    }
+    return out;
+  }
+
+  function planTotal(plan) {
+    var counts = perSection(plan);
+    return Object.keys(counts).reduce(function (sum, id) { return sum + counts[id]; }, 0);
+  }
+
+  function sectionsFor(plan, key) { return plan.byCategory[key]; }
+
+  function sectionForIndex(split, i) {
+    var ids = Object.keys(split);
+    var acc = 0;
+    for (var k = 0; k < ids.length; k += 1) {
+      if (i < acc + split[ids[k]]) return ids[k];
+      acc += split[ids[k]];
+    }
+    return ids[ids.length - 1];
+  }
+
+  /* ==================================================================
+     5. COMPOSITING
+     One pass, one element: seeded band, scale, opacity, rotation, depth,
+     shape variant and tint. No blur filters, no filters at all — with
+     hundreds of live elements paint cost has to stay flat.
+     ================================================================== */
+  function pointerEventsFor(cat) {
+    return cat.interactive ? 'auto' : 'none';
+  }
+
+  function countFor(plan, key) {
+    var split = plan.byCategory[key];
+    var total = 0;
+    for (var id in split) total += split[id];
+    return total;
+  }
+
+  function elementAt(key, i, plan, layout) {
+    var cat = BY_KEY[key];
+    var split = plan.byCategory[key];
+    var r = rngFor(key, i);
+    var band = layout.bands[Math.floor(r() * layout.bands.length)];
+    var section = sectionForIndex(split, i);
+    /* The hero meadow asks for the largest bunnies, so it gets them by
+       `scale` on the hop wrapper: one drawing, two sizes. */
+    var hero = key === BUNNY_KEY && section === 'hero-meadow';
+    return {
+      key: cat.key,
+      index: i,
+      section: section,
+      x: round3(band.x0 + r() * (band.x1 - band.x0)),
+      y: round3(band.y0 + r() * (band.y1 - band.y0)),
+      size: cat.size,
+      scale: round3(0.6 + r()),
+      opacity: round3(0.55 + r() * 0.45),
+      rotate: Math.round((r() * 2 - 1) * cat.tilt),
+      z: DEPTHS[Math.floor(r() * DEPTHS.length)],
+      variant: Math.floor(r() * cat.variants),
+      tint: cat.tints[Math.floor(r() * cat.tints.length)],
+      pointerEvents: pointerEventsFor(cat),
+      carrier: cat.interactive ? cat.key : null,
+      /* Hopping bunnies are the cursor-reactive subset; everything else is
+         a bystander, which is what makes the reaction read as deliberate. */
+      reactive: key === BUNNY_KEY && isReactiveBunny(i, countFor(plan, key)),
+      emphasis: hero ? HERO_SCALE : 1
+    };
+  }
+
+  /* ==================================================================
+     6. THE MOTION BUDGET
+     The load-bearing decision of the page: the roster is a page-total
+     quantity and the motion budget is a moment-to-moment quantity, and
+     conflating them is what would force either a sparse page or a
+     stuttering one. So the roster mounts every element it owes, but only
+     a deterministic active subset ever gets an ambient animation, and
+     even that subset pauses whenever its section leaves the viewport.
+
+     Two rules make the numbers honest:
+       * the active subset is RANKED, not thresholded — a threshold would
+         drift with the roster and could overshoot the budget, while a
+         rank is exact and is re-capped every time the plan changes;
+       * every stagger value is derived from the seeded index, so the
+         partition and the phasing are identical on every load and
+         nothing is sampled per frame.
+     ================================================================== */
+  var MOTION_BUDGET = 180;
+  var ACTIVE_FRACTION = 1 / 3;
+
+  var AMBIENT = [
+    'amb-drift', 'amb-twinkle', 'amb-sway', 'amb-float', 'amb-bob', 'amb-shimmer', 'amb-spin'
+  ];
+
+  /* Deliberately incommensurate durations: no two elements share a cycle,
+     so the active set never pulses in lockstep. */
+  var AMBIENT_DURATIONS = [4.4, 5.6, 6.9, 8.3, 10.1, 12.5, 15.7];
+
+  /* The delay window has to be at least as long as the longest cycle,
+     otherwise a whole lap of the slowest animation would repeat with the
+     same phase offset and read as one synchronised pulse. */
+  var STAGGER_WINDOW = 18;
+
+  /* Ambient behaviour by intent. Anything with a natural axis of symmetry
+     may spin; drifting marks drift; upright characters sway, bob or
+     float. Bunny rabbits get sway and float only — hopping, arcing and
+     cursor reactivity belong to the bunny task, not here. */
+  var MOTION_PROFILE = {
+    sparkles: ['amb-twinkle', 'amb-shimmer', 'amb-spin'],
+    hearts: ['amb-float', 'amb-sway', 'amb-bob'],
+    flowers: ['amb-sway', 'amb-bob', 'amb-drift'],
+    bunnies: ['amb-sway', 'amb-float'],
+    rainbows: ['amb-drift', 'amb-float'],
+    sakura: ['amb-drift', 'amb-twinkle'],
+    teddies: ['amb-bob', 'amb-sway'],
+    gems: ['amb-twinkle', 'amb-shimmer'],
+    letters: ['amb-float', 'amb-sway'],
+    smileys: ['amb-bob', 'amb-twinkle'],
+    bows: ['amb-sway', 'amb-spin'],
+    butterflies: ['amb-drift', 'amb-float'],
+    treats: ['amb-bob', 'amb-sway'],
+    pets: ['amb-bob', 'amb-sway'],
+    notes: ['amb-drift', 'amb-float'],
+    stars: ['amb-twinkle', 'amb-shimmer', 'amb-spin'],
+    fairies: ['amb-drift', 'amb-sway'],
+    candy: ['amb-bob', 'amb-sway'],
+    mushrooms: ['amb-sway', 'amb-drift']
+  };
+  var MOTION_FALLBACK = ['amb-drift', 'amb-twinkle', 'amb-sway'];
+
+  function profileFor(cat) {
+    return MOTION_PROFILE[cat.key] || MOTION_FALLBACK;
+  }
+
+  /* One pure function of (category key, element index): which ambient
+     animation, how long, and where in the cycle it starts. Delays are
+     NEGATIVE so every active element is already mid-cycle at first paint
+     — a positive delay would leave the page visibly frozen while its
+     long cycles wound up. */
+  function motionFor(key, i) {
+    var profile = MOTION_PROFILE[key] || MOTION_FALLBACK;
+    var r = rngFor('motion:' + key, i);
+    return {
+      className: profile[Math.floor(r() * profile.length)],
+      duration: AMBIENT_DURATIONS[Math.floor(r() * AMBIENT_DURATIONS.length)],
+      delay: round3(-r() * STAGGER_WINDOW),
+      score: r()
+    };
+  }
+
+  /* Deterministic active/idle partition of the mounted roster. Rank by
+     the seeded score, promote the best ACTIVE_FRACTION of them, and cap
+     the result at the budget so raising a roster floor cannot raise the
+     motion cost. The tie-break keeps it a total order, so the partition
+     is identical on every load. */
+  function partition(plan, budget) {
+    var cap = typeof budget === 'number' ? budget : MOTION_BUDGET;
+    var slots = [];
+    var totalBySection = {};
+    var i;
+    var k;
+    for (i = 0; i < SECTION_IDS.length; i += 1) totalBySection[SECTION_IDS[i]] = 0;
+    for (var key in plan.byCategory) {
+      var split = plan.byCategory[key];
+      var count = 0;
+      for (k in split) count += split[k];
+      for (i = 0; i < count; i += 1) {
+        var section = sectionForIndex(split, i);
+        slots.push({
+          key: key,
+          index: i,
+          section: section,
+          motion: motionFor(key, i)
+        });
+        totalBySection[section] += 1;
+      }
+    }
+    var order = [];
+    for (i = 0; i < slots.length; i += 1) order.push(i);
+    order.sort(function (a, b) {
+      return slots[a].motion.score - slots[b].motion.score || a - b;
+    });
+    var target = Math.min(cap, Math.max(0, Math.round(slots.length * ACTIVE_FRACTION)));
+    var out = { budget: cap, target: target, total: slots.length, totalBySection: totalBySection, active: [], idle: [] };
+    for (i = 0; i < order.length; i += 1) {
+      if (i < target) out.active.push(slots[order[i]]);
+      else out.idle.push(slots[order[i]]);
+    }
+    return out;
+  }
+
+  /* ==================================================================
+     7. OFF-SCREEN SUSPENSION
+     One observer for the seven sections. Hundreds of per-element
+     observers would cost far more than the animations they saved. The
+     active count per section is the single source of truth behind the
+     running total, so the total is recomputed on intersection changes
+     and never on a frame.
+     ================================================================== */
+  /* One viewport height of vertical slack: a section wakes up while it is
+     still approaching, so scrolling never reveals decoration snapping to
+     life, and still pauses the four sections furthest from the viewport. */
+  var SUSPEND_ROOT_MARGIN = '100% 0px 100% 0px';
+
+  function createSuspension(activeBySection, activeTotal) {
+    var state = {
+      activeBySection: activeBySection,
+      activeTotal: activeTotal,
+      suspendedIds: {},
+      suspendedSections: 0,
+      running: activeTotal
+    };
+
+    function recompute() {
+      var running = 0;
+      var suspended = 0;
+      for (var id in state.activeBySection) {
+        if (state.suspendedIds[id]) suspended += 1;
+        else running += state.activeBySection[id];
+      }
+      state.suspendedSections = suspended;
+      state.running = running;
+    }
+
+    function apply(entries) {
+      var changed = false;
+      for (var i = 0; i < entries.length; i += 1) {
+        var target = entries[i].target;
+        var id = target.id;
+        var paused = !entries[i].isIntersecting;
+        if (Boolean(state.suspendedIds[id]) === paused) continue;
+        state.suspendedIds[id] = paused;
+        target.classList.toggle('is-suspended', paused);
+        changed = true;
+      }
+      if (changed) recompute();
+      return changed;
+    }
+
+    function observe(sections) {
+      if (typeof IntersectionObserver !== 'function') return null;
+      var observer = new IntersectionObserver(apply, {
+        root: null,
+        rootMargin: SUSPEND_ROOT_MARGIN,
+        threshold: 0
+      });
+      for (var i = 0; i < sections.length; i += 1) observer.observe(sections[i]);
+      return observer;
+    }
+
+    /* A density change re-ranks the active subset, so the per-section
+       counts have to be re-read rather than carried over: the running
+       total is read back off the mounted DOM and never from the plan,
+       which is what keeps it from ever being stale. Recomputing here
+       reuses the observer and the suspension flags already in place, so
+       a density change costs no second observer and no re-arming. */
+    function refresh(activeBySection) {
+      var total = 0;
+      for (var id in activeBySection) {
+        state.activeBySection[id] = activeBySection[id];
+        total += activeBySection[id];
+      }
+      state.activeTotal = total;
+      recompute();
+      return total;
+    }
+
+    return { state: state, apply: apply, observe: observe, recompute: recompute, refresh: refresh };
+  }
+
+  /* ==================================================================
+     8. HOPPING BUNNIES
+     Bunnies hop across the whole viewport, over text, over decoration and
+     over the boundaries between sections. Three decisions carry that:
+
+     * every bunny captures its character ONCE — travel distance, arc
+       height, hop duration, rest gap, first delay and heading — from the
+       same seeded rng the meadow is built from, so a reload paints the
+       same herd and nothing re-randomises while a bunny is in the air;
+     * a hop is a single `transform` on the mark, and the bunny's position
+       is tracked ARITHMETICALLY as origin-plus-offset rather than read back
+       from layout, so no hop ever forces a reflow and the whole chain is
+       a timer rather than a per-frame loop;
+     * hops are admitted against the same MOTION_BUDGET as the ambient
+       set. Bunny motion is part of that budget, not on top of it.
+
+     The sampling and targeting half is pure — every value it needs arrives
+     as an argument — so the interesting behaviour is testable headlessly.
+     ================================================================== */
+  var BUNNY_KEY = 'bunnies';
+  var BUNNY_LAYER_ID = 'bunny-layer';
+  var HERO_SCALE = 1.5;
+  var REACTIVE_MIN = 5;
+  var REACTIVE_MAX = 8;
+  var PROXIMITY_PX = 150;
+
+  var BUNNY_HOP = Object.freeze({
+    MIN_TRAVEL: 190,
+    MAX_TRAVEL: 620,
+    MIN_ARC: 46,
+    MAX_ARC: 158,
+    MIN_DURATION: 620,
+    MAX_DURATION: 1180,
+    MIN_REST: 240,
+    MAX_REST: 1400,
+    FIRST_DELAY_MAX: 2800,
+    TRAVEL_SPREAD: 0.4,
+    ARC_SPREAD: 0.22,
+    STARTLE_TRAVEL: 0.62,
+    STARTLE_DURATION: 0.66,
+    EDGE_MARGIN: 0.03,
+    REST_RETRY: 260,
+    LANDING_PAD: 40
+  });
+
+  var bunnies = [];
+  var bunnyHost = null;
+  var bunnyBox = null;
+  var bunnyBoxKey = '';
+  var pointer = { x: 0, y: 0 };
+
+  function round2(v) { return Math.round(v * 100) / 100; }
+  function clamp(v, lo, hi) { return v < lo ? lo : (v > hi ? hi : v); }
+  function spread(jitter, amount) {
+    return 1 + (clamp(jitter, 0, 1) - 0.5) * 2 * amount;
+  }
+
+  /* A bunny's character, sampled once and never again. */
+  function bunnyProfile(i) {
+    var r = rngFor('bunny-hop:' + BUNNY_KEY, i);
+    var hop = BUNNY_HOP;
+    return {
+      index: i,
+      travel: round2(hop.MIN_TRAVEL + r() * (hop.MAX_TRAVEL - hop.MIN_TRAVEL)),
+      arc: round2(hop.MIN_ARC + r() * (hop.MAX_ARC - hop.MIN_ARC)),
+      duration: round2(hop.MIN_DURATION + r() * (hop.MAX_DURATION - hop.MIN_DURATION)),
+      rest: round2(hop.MIN_REST + r() * (hop.MAX_REST - hop.MIN_REST)),
+      firstDelay: round2(r() * hop.FIRST_DELAY_MAX),
+      direction: r() < 0.5 ? -1 : 1
+    };
+  }
+
+  /* Five to eight bunnies notice the cursor, chosen once from the seed, so
+     the subset is stable across loads and the rest of the herd genuinely
+     does not react. */
+  function reactiveIndexes(count) {
+    var n = Math.max(0, Math.min(count, REACTIVE_MIN
+      + Math.floor(rngFor('bunny-reactive:' + BUNNY_KEY, 0)() * (REACTIVE_MAX - REACTIVE_MIN + 1))));
+    var pool = [];
+    var i;
+    for (i = 0; i < count; i += 1) pool.push(i);
+    var r = rngFor('bunny-reactive-order:' + BUNNY_KEY, 0);
+    for (i = pool.length - 1; i > 0; i -= 1) {
+      var j = Math.floor(r() * (i + 1));
+      var swap = pool[i];
+      pool[i] = pool[j];
+      pool[j] = swap;
+    }
+    return { size: n, indexes: pool.slice(0, n).sort(function (a, b) { return a - b; }) };
+  }
+
+  function isReactiveBunny(i, count) {
+    return reactiveIndexes(count).indexes.indexOf(i) >= 0;
+  }
+
+  /* One hop, decided once. Turn, travel, arc, and where the bunny ends up.
+     Nothing here reads live state, so the same captured inputs always yield
+     the same hop — a bunny cannot be re-randomised mid-flight. */
+  function hopStep(profile, state, viewport, opts) {
+    var w = Number(viewport && viewport.w) || 0;
+    var h = Number(viewport && viewport.h) || 0;
+    if (!(w > 0) || !(h > 0) || !profile || !state) return null;
+    var options = opts || {};
+    var jitter = typeof options.jitter === 'number' ? options.jitter : 0.5;
+    var startled = options.startled === true;
+    var hop = BUNNY_HOP;
+
+    var travel = profile.travel * (startled ? hop.STARTLE_TRAVEL : spread(jitter, hop.TRAVEL_SPREAD));
+    /* Duration tracks the distance actually flown, so every bunny keeps its
+       own captured speed rather than changing pace hop to hop. */
+    var duration = profile.duration * (travel / profile.travel)
+      * (startled ? hop.STARTLE_DURATION : 1);
+    var arc = profile.arc * (startled ? 1.08 : spread(jitter, hop.ARC_SPREAD));
+
+    var from = { x: state.x, y: state.y };
+    var direction = profile.direction;
+    if (startled && options.pointer) {
+      var away = from.x - options.pointer.x;
+      if (Math.abs(away) >= 8) direction = away < 0 ? -1 : 1;
+    }
+    var margin = hop.EDGE_MARGIN * w;
+    var target = from.x + direction * travel;
+    if (target < -margin || target > w + margin) {
+      direction = -direction;
+      target = from.x + direction * travel;
+    }
+    /* A little vertical drift keeps the herd from travelling on rails, and
+       the landing is clamped so no bunny is left parked off the band. */
+    var restY = clamp(from.y + (clamp(jitter, 0, 1) - 0.5) * 0.1 * h, h * 0.04, h * 0.96);
+
+    return {
+      from: from,
+      to: { x: round2(target), y: round2(restY) },
+      dx: round2(target - from.x),
+      dy: round2(restY - from.y),
+      arc: round2(arc),
+      duration: round2(duration),
+      rest: profile.rest,
+      opacity: typeof state.opacity === 'number' ? state.opacity : 1,
+      direction: direction,
+      startled: startled
+    };
+  }
+
+  /* Where an off-screen bunny respawns: it may leave the viewport, but it is
+     never lost. The correction is a teleport that happens while it is out of
+     sight, which is why the next hop simply starts from the wrapped offset. */
+  function wrapDelta(x, viewport) {
+    var w = Number(viewport && viewport.w) || 0;
+    if (!(w > 0)) return { dx: 0, wrapped: false };
+    var margin = BUNNY_HOP.EDGE_MARGIN * w;
+    if (x < -margin) return { dx: round2(w + margin - x), wrapped: true };
+    if (x > w + margin) return { dx: round2(-margin - x), wrapped: true };
+    return { dx: 0, wrapped: false };
+  }
+
+  function withinProximity(centre, radius, at) {
+    if (!centre || !at) return false;
+    var reach = PROXIMITY_PX + (Number(radius) || 0);
+    var dx = centre.x - at.x;
+    var dy = centre.y - at.y;
+    return dx * dx + dy * dy <= reach * reach;
+  }
+
+  /* Bunny-level suspension. The section observer cannot reach a bunny —
+     bunnies live in a viewport-fixed layer precisely so they can cross
+     section boundaries — so a hop is armed against the bunny's own
+     position in the viewport instead. */
+  function withinViewport(bunny, viewport) {
+    var w = Number(viewport && viewport.w) || 0;
+    var h = Number(viewport && viewport.h) || 0;
+    if (!(w > 0) || !(h > 0) || !bunny) return false;
+    var pad = (Number(bunny.radius) || 0) + BUNNY_HOP.EDGE_MARGIN * w;
+    return bunny.x >= -pad && bunny.x <= w + pad && bunny.y >= -pad && bunny.y <= h + pad;
+  }
+
+  /* Bunny hops are part of the motion budget, never in addition to it. */
+  function hopRoom(ambient, inflight, budget) {
+    var cap = typeof budget === 'number' ? budget : MOTION_BUDGET;
+    return Math.max(0, cap - (Number(ambient) || 0) - (Number(inflight) || 0));
+  }
+
+  /* Travel, arc and squash-and-stretch, all in one transform, plus the
+     faintest opacity dip so a bunny in flight reads as lighter. Nothing
+     here is a layout property, and nothing is per-frame: six frames. */
+  function hopFrames(hop, from) {
+    var origin = from || { x: 0, y: 0 };
+    var dx = hop.dx;
+    var dy = hop.dy || 0;
+    var arc = hop.arc;
+    var opacity = typeof hop.opacity === 'number' ? hop.opacity : 1;
+    function at(progress, lift, stretch, dim) {
+      return {
+        offset: progress,
+        transform: 'translate3d(' + round2(origin.x + dx * progress) + 'px,'
+          + round2(origin.y + dy * progress - lift) + 'px,0)'
+          + ' scale(' + stretch + ')',
+        opacity: round3(opacity * dim)
+      };
+    }
+    return [
+      at(0, 0, '1,1', 1),
+      at(0.16, arc * 0.66, '1.07,0.93', 0.94),
+      at(0.34, arc, '0.95,1.08', 0.9),
+      at(0.52, arc * 0.94, '1.05,0.95', 0.92),
+      at(0.72, arc * 0.52, '0.97,1.05', 0.95),
+      at(1, 0, '1,1', 1)
+    ];
+  }
+
+  /* ---- the controller -------------------------------------------- */
+
+  /* A timer chain, guarded so a host without timers (a headless harness,
+     a prerender pass) simply never starts a hop instead of throwing. */
+  var canSchedule = typeof setTimeout === 'function';
+  function later(fn, ms) { return canSchedule ? setTimeout(fn, ms) : 0; }
+  function cancelTimer(id) { if (id && canSchedule) clearTimeout(id); }
+
+  /* The coordinate space the bunnies actually live in: the bunny layer's own
+     box, which is the viewport minus anything the viewport reserves, rather
+     than `innerWidth`. Tracked positions and rendered transforms have to
+     agree on this or proximity is measured in the wrong place. Cached, and
+     re-read only when the window size changes. */
+  function bunnyViewport() {
+    var w = Number(window.innerWidth) || 0;
+    var h = Number(window.innerHeight) || 0;
+    var key = w + 'x' + h;
+    if (bunnyBox && bunnyBoxKey === key) return bunnyBox;
+    var cw = bunnyHost ? Number(bunnyHost.clientWidth) || 0 : 0;
+    var ch = bunnyHost ? Number(bunnyHost.clientHeight) || 0 : 0;
+    bunnyBox = { w: cw > 0 ? cw : w, h: ch > 0 ? ch : h };
+    bunnyBoxKey = key;
+    return bunnyBox;
+  }
+
+  function inflightCount() {
+    var n = 0;
+    for (var i = 0; i < bunnies.length; i += 1) if (bunnies[i].busy) n += 1;
+    return n;
+  }
+
+  /* Bunny hops and sayings share one budget rather than holding two, so
+     a hop is only armed against what the sayings are not already using.
+     With no saying layer mounted `sayingClaim()` is zero and this is
+     exactly the room it always was. */
+  function hopRoomNow() {
+    return hopRoom(suspension ? suspension.state.running : 0, inflightCount(), MOTION_BUDGET)
+      - sayingClaim();
+  }
+
+  /* The hop is rendered on the wrapper, never on the mark: the mark carries a
+     seeded `scale` and `rotate`, and individual transform properties apply
+     before `transform`, so animating the mark would multiply and rotate the
+     hop's translate — a bunny told to travel 200px would travel 400. */
+  function fly(bunny, step) {
+    var wrapper = bunny.wrapper;
+    if (!wrapper || typeof wrapper.animate !== 'function') return;
+    if (bunny.flight && typeof bunny.flight.cancel === 'function') bunny.flight.cancel();
+    /* Frames start from the offset the bunny rested at, so cancelling the
+       previous flight and starting this one is seamless. */
+    bunny.flight = wrapper.animate(
+      hopFrames(step, { x: round2(bunny.offX - step.dx), y: round2(bunny.offY - (step.dy || 0)) }),
+      { duration: step.duration, easing: 'linear', fill: 'forwards' }
+    );
+  }
+
+  /* The one gate every hop passes through: reduced motion, the busy flag,
+     the bunny's own position, and the shared motion budget. */
+  function armHop(bunny, opts) {
+    if (!bunny || bunny.busy || reduceMotion || !canSchedule) return null;
+    var viewport = bunnyViewport();
+    var from = {
+      x: bunny.bx * viewport.w + bunny.offX,
+      y: bunny.by * viewport.h + bunny.offY,
+      opacity: bunny.opacity
+    };
+    if (!withinViewport(from, viewport)) return null;
+    if (hopRoomNow() <= 0) return null;
+    var step = hopStep(bunny.profile, from, viewport, opts);
+    if (!step) return null;
+
+    cancelTimer(bunny.timer);
+    bunny.token += 1;
+    var token = bunny.token;
+    bunny.timer = 0;
+    bunny.offX = round2(bunny.offX + step.dx);
+    bunny.offY = round2(bunny.offY + (step.dy || 0));
+    bunny.x = round2(from.x + step.dx);
+    bunny.y = round2(from.y + (step.dy || 0));
+    bunny.busy = true;
+    bunny.resting = false;
+    bunny.hops += 1;
+    bunny.last = {
+      from: { x: round2(from.x), y: round2(from.y) },
+      dx: step.dx,
+      dy: step.dy || 0,
+      duration: step.duration,
+      arc: step.arc,
+      startled: step.startled,
+      wrap: 0,
+      startedAt: Date.now()
+    };
+    fly(bunny, step);
+    bunny.timer = later(function () { land(bunny, token, step); }, step.duration + BUNNY_HOP.LANDING_PAD);
+    return step;
+  }
+
+  function land(bunny, token, step) {
+    if (bunny.token !== token) return;
+    bunny.timer = 0;
+    bunny.busy = false;
+    bunny.resting = true;
+    var viewport = bunnyViewport();
+    var wrap = wrapDelta(bunny.bx * viewport.w + bunny.offX, viewport);
+    if (wrap.wrapped) {
+      bunny.offX = round2(bunny.offX + wrap.dx);
+      bunny.x = round2(bunny.bx * viewport.w + bunny.offX);
+      /* The respawn has to be DRAWN as well as recorded. The wrap happens
+         while the bunny is outside the viewport, so putting the rendered
+         transform where the bookkeeping says it is costs nothing visually —
+         and skipping this would leave the bunny drawn at its pre-wrap spot
+         for the whole rest gap, which is both wrong and a lie to proximity. */
+      if (bunny.flight && typeof bunny.flight.cancel === 'function') bunny.flight.cancel();
+      bunny.flight = null;
+      if (bunny.wrapper && bunny.wrapper.style) {
+        bunny.wrapper.style.transform = 'translate3d(' + bunny.offX + 'px,' + bunny.offY + 'px,0)';
+      }
+    }
+    bunny.y = round2(bunny.by * viewport.h + bunny.offY);
+    if (bunny.last) bunny.last.wrap = wrap.dx;
+    bunny.timer = later(function () { hopNext(bunny, token); }, step.rest);
+  }
+
+  function hopNext(bunny, token) {
+    bunny.timer = 0;
+    if (bunny.token !== token) return;
+    /* A bunny refused by the budget waits and tries again, so the herd never
+       settles down just because the page is busy. */
+    if (!armHop(bunny, { jitter: Math.random() })) {
+      bunny.resting = true;
+      bunny.timer = later(function () { hopNext(bunny, token); }, BUNNY_HOP.REST_RETRY);
+    }
+  }
+
+  function startBunnyHops() {
+    /* Motion sensitivity stops the herd before it starts: nothing is armed,
+       nothing is removed, and every bunny stays exactly where it stands. */
+    if (reduceMotion || !canSchedule) return;
+    for (var i = 0; i < bunnies.length; i += 1) {
+      var bunny = bunnies[i];
+      bunny.resting = true;
+      bunny.timer = later(function (target) {
+        return function () { hopNext(target, target.token); };
+      }(bunny), bunny.profile.firstDelay);
+    }
+  }
+
+  function stopBunnyHops() {
+    for (var i = 0; i < bunnies.length; i += 1) {
+      var bunny = bunnies[i];
+      cancelTimer(bunny.timer);
+      bunny.timer = 0;
+      bunny.token += 1;
+      bunny.busy = false;
+      bunny.resting = true;
+      if (bunny.flight && typeof bunny.flight.cancel === 'function') bunny.flight.cancel();
+      bunny.flight = null;
+    }
+  }
+
+  function resetBunnies() {
+    stopBunnyHops();
+    bunnies = [];
+  }
+
+  /* One listener for the whole page. A bunny only reacts while it is at
+     rest — the busy flag is the gate, which is what stops a moving pointer
+     from restarting a hop on every event — and the budget is honoured by
+     giving up on the sweep rather than fighting it. */
+  function onPointerMove(event) {
+    pointer.x = event.clientX;
+    pointer.y = event.clientY;
+    /* The same single listener feeds the follower and the rainbow trail.
+       It only records a target; the write is coalesced to one frame. */
+    queueFollow(event.clientX, event.clientY);
+    if (reduceMotion) return;
+    for (var i = 0; i < bunnies.length; i += 1) {
+      var bunny = bunnies[i];
+      if (!bunny.reactive || bunny.busy || !bunny.resting) continue;
+      if (!withinProximity(bunny, bunny.radius, pointer)) continue;
+      if (!armHop(bunny, { jitter: Math.random(), startled: true, pointer: pointer })) return;
+    }
+  }
+
+  /* Read-only inspection, for this task's checks and for the motion gate. */
+  function bunnyState() {
+    var viewport = bunnyViewport();
+    var out = {
+      total: bunnies.length,
+      reactive: 0,
+      hopping: 0,
+      resting: 0,
+      hops: 0,
+      ambient: suspension ? suspension.state.running : 0,
+      room: 0,
+      reduceMotion: reduceMotion,
+      delaySpread: 0,
+      delays: [],
+      bunnies: []
+    };
+    var low = Infinity;
+    var high = -Infinity;
+    for (var i = 0; i < bunnies.length; i += 1) {
+      var b = bunnies[i];
+      if (b.reactive) out.reactive += 1;
+      if (b.busy) out.hopping += 1;
+      else out.resting += 1;
+      out.hops += b.hops;
+      out.delays.push(b.profile.firstDelay);
+      low = Math.min(low, b.profile.firstDelay);
+      high = Math.max(high, b.profile.firstDelay);
+      out.bunnies.push({
+        index: b.index,
+        x: round2(b.x),
+        y: round2(b.y),
+        radius: round2(b.radius),
+        reactive: b.reactive,
+        busy: b.busy,
+        resting: !b.busy,
+        hops: b.hops,
+        onScreen: withinViewport(b, viewport),
+        last: b.last ? {
+          from: { x: b.last.from.x, y: b.last.from.y },
+          dx: b.last.dx,
+          dy: b.last.dy,
+          duration: b.last.duration,
+          arc: b.last.arc,
+          startled: b.last.startled,
+          wrap: b.last.wrap,
+          startedAt: b.last.startedAt
+        } : null
+      });
+    }
+    out.delaySpread = bunnies.length > 0 ? round2(high - low) : 0;
+    out.room = hopRoomNow();
+    return out;
+  }
+
+  /* ==================================================================
+     9. AFFIRMATION SAYINGS
+     One pool, one bubble component, five ways of reaching it.
+
+     Three decisions carry the whole thing:
+
+       * ONE pool. Every style draws its text from this array, so "at
+         least 20 unique sayings" is a property of the data rather than
+         of five implementations that each happened to find some words.
+       * ONE bubble. `.saying` is styled once in the stylesheet; each
+         style adds a position and a lifecycle, never a look.
+       * ZERO layout reads. A carrier already knows where it is — its
+         seeded band coordinates are on its own inline style — and
+         `.layer-sayings` shares `.layer-mid`'s exact box, so a hover
+         bubble can be placed from the carrier's own numbers, a reveal
+         from the same band arithmetic the roster already uses, and the
+         follower from a coalesced `transform: translate`. The page never
+         asks where anything is.
+
+     Legibility is arithmetic, not discipline: the content column is
+     declared in `layoutAt`, so `parkOutsideColumn` can keep every
+     viewport-crossing bubble out of the words without a measurement.
+     ================================================================== */
+  var SAYINGS = Object.freeze([
+    'you are great!',
+    'I love you!',
+    'Keep it up!',
+    'wow, wonderful!',
+    "You're doing amazing!",
+    'You sparkle!',
+    "So glad you're here!",
+    'Cuteness level: maximum!',
+    "You're my favourite!",
+    'Bunnies say hi!',
+    'Sending you a hug!',
+    'You make me smile!',
+    'Proud of you!',
+    'You light up the room!',
+    'Have the sweetest day!',
+    "You're a star!",
+    'Ten tiny hugs!',
+    'Please be loved today!',
+    "You're doing better than you think!",
+    'Rainbows for your whole week!',
+    'Peekaboo! I see you!',
+    'Your smile is magic!',
+    'Keep being wonderful!',
+    "You're somebody's favourite!"
+  ]);
+
+  function distinctSayings() {
+    var seen = {};
+    var out = [];
+    for (var i = 0; i < SAYINGS.length; i += 1) {
+      if (!seen[SAYINGS[i]]) { seen[SAYINGS[i]] = true; out.push(SAYINGS[i]); }
+    }
+    return out;
+  }
+
+  /* One seeded function of (key, index) assigns every saying a pool slot,
+     so a reload shows the same word on the same decoration and no style
+     ever has to hold a list of its own. */
+  function sayingIndexFor(key, index) {
+    return Math.floor(rngFor('saying:' + key, index)() * SAYINGS.length) % SAYINGS.length;
+  }
+
+  var SAYINGS_LAYER_CLASS = 'layer-sayings';
+  var SAYING_FX_ID = 'saying-fx';
+
+  /* The Heart Wall is the densest: it already carries the most carriers,
+     and it takes the most revealed sayings too. Every section takes some,
+     so none is empty. */
+  var REVEAL_PLAN = {
+    'hero-meadow': 3, 'bunny-meadow': 3, 'heart-wall': 8, 'candy-shelf': 4,
+    'rainbow-sky': 4, 'cloud-garden': 3, 'sparkle-signoff': 5
+  };
+
+  /* Every bound this task keeps. `DRIFT_MAX` is small on purpose: drift
+     is the only saying style that costs budget continuously, and bunny
+     hops share that same budget rather than sitting on top of it. */
+  var SAYING_ENVELOPE = Object.freeze({
+    DRIFT_MAX: 3,
+    POP_MAX: 3,
+    TRAIL_MAX: 12,
+    POP_LIFE_MS: 1500,
+    TIMED_EVERY_MS: 4200,
+    DRIFT_RESEAT_MS: 5200,
+    FOLLOW_FRAME_MS: 16,
+    FOLLOW_OFFSET_X: 30,
+    FOLLOW_OFFSET_Y: -28,
+    FOLLOW_EVERY_FRAMES: 18,
+    REVEAL_THRESHOLD: 0.35
+  });
+
+  function sayingViewport() {
+    return { w: Number(window.innerWidth) || 0, h: Number(window.innerHeight) || 0 };
+  }
+
+  /* The declared content column, in viewport pixels. Derived from the same
+     layout the decoration bands come from, so it is a pure function of the
+     window size rather than a measurement of the document. */
+  function columnBox(width, height) {
+    var col = layoutAt(Number(width) || 1280).column;
+    var w = Number(width) || 0;
+    var h = Number(height) || 0;
+    return { x0: col.x0 * w, x1: col.x1 * w, y0: col.y0 * h, y1: col.y1 * h };
+  }
+
+  function insideColumn(box, x, y) {
+    if (!box) return false;
+    return x > box.x0 && x < box.x1 && y > box.y0 && y < box.y1;
+  }
+
+  /* The nearest point outside the column, on whichever side is closest.
+     This is what lets a bubble follow the pointer across the whole
+     viewport and still never end up sitting on the body copy. */
+  function parkOutsideColumn(box, x, y) {
+    if (!insideColumn(box, x, y)) return { x: round2(x), y: round2(y) };
+    var toLeft = x - box.x0;
+    var toRight = box.x1 - x;
+    var toUp = y - box.y0;
+    var toDown = box.y1 - y;
+    var nearest = Math.min(toLeft, toRight, toUp, toDown);
+    if (nearest === toLeft) return { x: round2(box.x0 - 10), y: round2(y) };
+    if (nearest === toRight) return { x: round2(box.x1 + 10), y: round2(y) };
+    if (nearest === toUp) return { x: round2(x), y: round2(box.y0 - 10) };
+    return { x: round2(x), y: round2(box.y1 + 10) };
+  }
+
+  /* A point in a section's margins: one of the four bands the roster
+     already keeps decoration out of the text column in. Pure in
+     (key, index), so a reveal never jitters between loads. */
+  function marginSpot(key, i) {
+    var r = rngFor('saying-spot:' + key, i);
+    var bands = layoutAt(Number(window.innerWidth) || 1280).bands;
+    var band = bands[Math.floor(r() * bands.length)];
+    return {
+      x: round3(clamp(band.x0 + r() * (band.x1 - band.x0), 0.04, 0.96)),
+      y: round3(clamp(band.y0 + r() * (band.y1 - band.y0), 0.03, 0.97))
+    };
+  }
+
+  /* The coordinate space every bubble is placed in is the host's box, and
+     the host IS the viewport, so one box serves the px and the fraction. */
+  function sayingFx() {
+    if (fxHost !== null) return fxHost;
+    fxHost = document.getElementById(SAYING_FX_ID);
+    return fxHost;
+  }
+
+  function sectionOf(node) {
+    var at = node;
+    while (at) {
+      if (at.tagName === 'SECTION') return at;
+      at = at.parentNode;
+    }
+    return null;
+  }
+
+  function detachSaying(node) {
+    detachNode(node);
+  }
+
+  /* --- (a) hover and focus: ONE bubble per section, reused ---------- */
+
+  var hoverBubbles = {};
+
+  function hoverBubbleFor(section) {
+    var id = section ? section.getAttribute('id') : null;
+    if (!id) return null;
+    if (hoverBubbles[id]) return hoverBubbles[id];
+    var host = section.querySelector('.' + SAYINGS_LAYER_CLASS);
+    if (!host) return null;
+    var bubble = document.createElement('span');
+    bubble.className = 'saying saying--hover';
+    bubble.setAttribute('role', 'status');
+    bubble.setAttribute('aria-live', 'polite');
+    host.appendChild(bubble);
+    hoverBubbles[id] = bubble;
+    return bubble;
+  }
+
+  function showCarrierSaying(carrier) {
+    var section = sectionOf(carrier);
+    var bubble = hoverBubbleFor(section);
+    if (!bubble) return null;
+    var index = Number(carrier.getAttribute('data-saying-index')) || 0;
+    setSayingText(bubble, SAYINGS[index % SAYINGS.length]);
+    bubble.setAttribute('style', '--sx:' + carrier.getAttribute('data-sx')
+      + ';--sy:' + carrier.getAttribute('data-sy')
+      + ';--op:' + (carrier.getAttribute('data-sop') || '1'));
+    bubble.classList.add('is-in');
+    return bubble;
+  }
+
+  function hideCarrierSaying(carrier) {
+    var section = sectionOf(carrier);
+    var id = section ? section.getAttribute('id') : null;
+    var bubble = id ? hoverBubbles[id] : null;
+    if (bubble) bubble.classList.remove('is-in');
+  }
+
+  /* The keyboard half is not a fallback: a saying must never be reachable
+     only by pointing at it, so `focus` and `blur` answer exactly what
+     `pointerenter` and `pointerleave` answer. */
+  function onCarrierEnter(event) { showCarrierSaying(event.currentTarget); }
+  function onCarrierLeave(event) { hideCarrierSaying(event.currentTarget); }
+
+  function wireCarriers() {
+    var carriers = document.querySelectorAll('[data-saying-carrier]');
+    var wired = 0;
+    for (var i = 0; i < carriers.length; i += 1) {
+      var carrier = carriers[i];
+      if (carrier.getAttribute('data-saying-wired') === 'true') continue;
+      /* Elements are wired directly rather than delegated: these are 271
+         leaves, so a delegation sweep would only add a document-level
+         listener to do the same work. A host that cannot take a listener
+         simply has nothing to wire. */
+      if (typeof carrier.addEventListener !== 'function') continue;
+      carrier.setAttribute('data-saying-wired', 'true');
+      carrier.addEventListener('pointerenter', onCarrierEnter);
+      carrier.addEventListener('pointerleave', onCarrierLeave);
+      carrier.addEventListener('focus', onCarrierEnter);
+      carrier.addEventListener('blur', onCarrierLeave);
+      wired += 1;
+    }
+    /* The keyboard half of the saying contract, done properly: one labelled
+       stop per section, living in `.layer-sayings` which is NOT aria-hidden.
+       Carriers cannot serve this role — they sit in the hidden decoration
+       layer, so a tab stop there would be reachable by keyboard but invisible
+       to assistive technology. These stops reuse the same bubble, placed from
+       the same authored band numbers, so no layout is ever measured. */
+    var stops = document.querySelectorAll('[data-saying-a11y]');
+    for (var s = 0; s < stops.length; s += 1) {
+      var stop = stops[s];
+      if (stop.getAttribute('data-saying-a11y-wired') === 'true') continue;
+      stop.setAttribute('data-saying-a11y-wired', 'true');
+      stop.addEventListener('focus', onCarrierEnter);
+      stop.addEventListener('blur', onCarrierLeave);
+    }
+    return wired;
+  }
+
+  /* --- (b) scroll reveal: ONE observer, unobserved after one fire ---- */
+
+  var revealTargets = [];
+  var revealObserver = null;
+  var revealRevealed = 0;
+  var revealWatched = 0;
+
+  function mountReveals() {
+    for (var i = 0; i < SECTION_IDS.length; i += 1) {
+      var id = SECTION_IDS[i];
+      var section = document.getElementById(id);
+      if (!section) continue;
+      var host = section.querySelector('.' + SAYINGS_LAYER_CLASS);
+      if (!host) continue;
+      var count = REVEAL_PLAN[id] || 0;
+      for (var k = 0; k < count; k += 1) {
+        var spot = marginSpot(id, k);
+        var node = document.createElement('span');
+        var index = sayingIndexFor('reveal:' + id, k);
+        node.className = 'saying saying--reveal';
+        node.setAttribute('data-saying-index', index);
+        setSayingText(node, SAYINGS[index]);
+        node.setAttribute('style', '--sx:' + spot.x + ';--sy:' + spot.y + ';--op:' + round2(0.95 - 0.06 * (k % 4)));
+        host.appendChild(node);
+        revealTargets.push({ node: node, section: id });
+      }
+    }
+    return revealTargets;
+  }
+
+  function observeReveals(targets) {
+    /* No targets means no observer. A page whose markup does not carry the
+       saying layers gets the other four styles and no second observer. */
+    if (targets.length === 0 || typeof IntersectionObserver !== 'function') return null;
+    var observer = new IntersectionObserver(function (entries, self) {
+      for (var i = 0; i < entries.length; i += 1) {
+        var entry = entries[i];
+        if (!entry.isIntersecting) continue;
+        entry.target.classList.add('is-revealed');
+        revealRevealed += 1;
+        revealWatched -= 1;
+        /* Once, ever: a reveal that re-fired on the way back up would be
+           the single most irritating thing this page could do. */
+        self.unobserve(entry.target);
+      }
+    }, { root: null, rootMargin: '0px', threshold: SAYING_ENVELOPE.REVEAL_THRESHOLD });
+    for (var i = 0; i < targets.length; i += 1) observer.observe(targets[i].node);
+    revealWatched = targets.length;
+    return observer;
+  }
+
+  /* --- the shared budget arbiter ------------------------------------ */
+
+  /* Sayings are admitted against the SAME budget as bunny hops, never
+     alongside them. Drift is the only continuous claim, and a bubble
+     that cannot be afforded is paused where it stands, not removed.
+
+     The two halves are disjoint by construction, which makes the total
+     exact rather than approximate: `sayingRoom()` is what is left after
+     the ambient set and the hops in the air, drift never takes more than
+     that, a pop-in never takes more than what drift left, and
+     `sayingClaim()` is handed straight back to the hop arbiter. So
+     ambient + hops + drift + pop-ins <= MOTION_BUDGET at every instant. */
+  function sayingClaim() {
+    return driftRunning() + popLiveNodes.length;
+  }
+
+  function sayingRoom() {
+    return hopRoom(
+      suspension ? suspension.state.running : 0,
+      inflightCount(),
+      MOTION_BUDGET
+    );
+  }
+
+  function popRoom() {
+    return sayingRoom() - driftRunning() - popLiveNodes.length;
+  }
+
+  function driftRunning() {
+    var n = 0;
+    for (var i = 0; i < driftPool.length; i += 1) if (driftPool[i].active) n += 1;
+    return n;
+  }
+
+  /* --- (c) drift: a fixed pool that recycles in place ---------------- */
+
+  var driftPool = [];
+  var driftTick = 0;
+
+  function mountDrift(fx) {
+    for (var i = 0; i < SAYING_ENVELOPE.DRIFT_MAX; i += 1) {
+      var node = document.createElement('span');
+      node.className = 'saying saying--drift';
+      fx.appendChild(node);
+      driftPool.push({ node: node, index: i, active: false });
+      reseatDrift(driftPool[i]);
+    }
+    admitSayingMotion();
+    return driftPool;
+  }
+
+  /* A recycle is a re-seat: same node, new band coordinate, new pool
+     slot, new cycle length. Nothing is created and nothing is destroyed,
+     so the pool is the same size after an hour as it was at load. */
+  function reseatDrift(entry) {
+    var round = driftTick * SAYING_ENVELOPE.DRIFT_MAX + entry.index;
+    var spot = marginSpot('drift', round);
+    var delay = round3(-(round % 7) * 2.4);
+    setSayingText(entry.node, SAYINGS[sayingIndexFor('drift', round)]);
+    entry.node.setAttribute('style', '--sx:' + spot.x + ';--sy:' + spot.y
+      + ';--op:0.92;--dur:' + (16 + (round % 5) * 3.5) + 's;--delay:' + delay + 's');
+  }
+
+  function admitSayingMotion() {
+    var room = Math.max(0, sayingRoom());
+    for (var i = 0; i < driftPool.length; i += 1) {
+      var on = i < room;
+      driftPool[i].active = on;
+      driftPool[i].node.classList.toggle('say-paused', !on);
+    }
+  }
+
+  function scheduleDrift() {
+    later(function () {
+      driftTick += 1;
+      for (var i = 0; i < driftPool.length; i += 1) reseatDrift(driftPool[i]);
+      admitSayingMotion();
+      scheduleDrift();
+    }, SAYING_ENVELOPE.DRIFT_RESEAT_MS);
+  }
+
+  /* --- (e) pop-ins -------------------------------------------------- */
+
+  var popLiveNodes = [];
+  var popCursor = 0;
+  var timedTick = 0;
+
+  function spawnPopSaying(sx, sy, key, round) {
+    var fx = sayingFx();
+    if (!fx) return null;
+    /* A sustained burst of clicks must not become a pile of nodes, so the
+       live set is capped and the caller is simply told no. */
+    if (popLiveNodes.length >= SAYING_ENVELOPE.POP_MAX) return null;
+    /* Budget first: a pop-in that cannot be afforded is simply not shown. */
+    if (popRoom() <= 0) return null;
+    var vp = sayingViewport();
+    var node = document.createElement('span');
+    node.className = 'saying saying--pop';
+    var index = sayingIndexFor(key, round);
+    setSayingText(node, SAYINGS[index]);
+    node.setAttribute('style', '--sx:' + round3(sx / (vp.w || 1))
+      + ';--sy:' + round3(sy / (vp.h || 1))
+      + ';--op:1;--life:' + (SAYING_ENVELOPE.POP_LIFE_MS / 1000) + 's');
+    fx.appendChild(node);
+    popLiveNodes.push(node);
+    later(function () {
+      var at = popLiveNodes.indexOf(node);
+      if (at >= 0) popLiveNodes.splice(at, 1);
+      detachSaying(node);
+    }, SAYING_ENVELOPE.POP_LIFE_MS);
+    return node;
+  }
+
+  /* The one hook the click pass calls. Task 7 owns the single document
+     click listener, so this task exposes the behaviour instead of
+     listening for the event itself. */
+  window.__popSaying = function (x, y) {
+    var vp = sayingViewport();
+    var parked = parkOutsideColumn(columnBox(vp.w, vp.h), Number(x) || 0, Number(y) || 0);
+    var node = spawnPopSaying(parked.x, parked.y, 'pop', popCursor);
+    if (node) popCursor += 1;
+    return node;
+  };
+
+  /* Which section the reader is actually looking at, from the suspension
+     observer's own bookkeeping rather than from a scroll position. */
+  function onScreenSectionId() {
+    var state = suspension ? suspension.state : null;
+    if (!state) return SECTION_IDS[0];
+    for (var i = 0; i < SECTION_IDS.length; i += 1) {
+      if (!state.suspendedIds[SECTION_IDS[i]]) return SECTION_IDS[i];
+    }
+    return SECTION_IDS[0];
+  }
+
+  function timedPop() {
+    if (popRoom() > 0) {
+      var id = onScreenSectionId();
+      var spot = marginSpot('timed:' + id, timedTick);
+      var vp = sayingViewport();
+      var parked = parkOutsideColumn(columnBox(vp.w, vp.h), spot.x * vp.w, spot.y * vp.h);
+      spawnPopSaying(parked.x, parked.y, 'timed:' + id, timedTick);
+    }
+    timedTick += 1;
+    later(timedPop, SAYING_ENVELOPE.TIMED_EVERY_MS);
+  }
+
+  /* --- (e) the follower and the rainbow trail -----------------------
+     The rainbow trail is a fixed pool of the same component whose fill is
+     clipped to its own text, so the words it leaves behind are literally
+     rainbow-coloured rather than merely moving. ----------------------- */
+
+  var followNode = null;
+  var followPending = null;
+  var followTimer = 0;
+  var followFrames = 0;
+  var trailNodes = [];
+  var trailPoints = [];
+
+  var PARKED_TRANSFORM = 'transform:translate3d(-9999px,-9999px,0)';
+
+  function mountFollower(fx) {
+    var node = document.createElement('span');
+    node.className = 'saying saying--follow';
+    setSayingText(node, SAYINGS[0]);
+    node.setAttribute('style', PARKED_TRANSFORM);
+    fx.appendChild(node);
+    followNode = node;
+    return node;
+  }
+
+  function mountTrail(fx) {
+    for (var i = 0; i < SAYING_ENVELOPE.TRAIL_MAX; i += 1) {
+      var node = document.createElement('span');
+      node.className = 'saying saying--trail';
+      /* The style names itself, the way every other one does: the rainbow
+         trail is greppable and queryable, not just a class name. */
+      node.setAttribute('data-saying-style', 'rainbow-trail');
+      setSayingText(node, SAYINGS[sayingIndexFor('trail', i)]);
+      node.setAttribute('style', PARKED_TRANSFORM + ';opacity:0');
+      fx.appendChild(node);
+      trailNodes.push(node);
+    }
+    return trailNodes;
+  }
+
+  /* The pointer event only records a target. One coalesced frame timer
+     drains it, so a burst of a thousand pointermove events costs one
+     `transform` write, and that write is a compositor transform — never a
+     layout-affecting property. */
+  function queueFollow(x, y) {
+    followPending = { x: x, y: y };
+    if (followTimer || !followNode) return;
+    followTimer = later(function () {
+      followTimer = 0;
+      applyFollow();
+    }, SAYING_ENVELOPE.FOLLOW_FRAME_MS);
+  }
+
+  function applyFollow() {
+    if (!followNode || !followPending) return;
+    followFrames += 1;
+    var vp = sayingViewport();
+    var target = {
+      x: followPending.x + SAYING_ENVELOPE.FOLLOW_OFFSET_X,
+      y: followPending.y + SAYING_ENVELOPE.FOLLOW_OFFSET_Y
+    };
+    var parked = parkOutsideColumn(columnBox(vp.w, vp.h), target.x, target.y);
+    followNode.setAttribute('style', 'transform:translate3d(' + parked.x + 'px,' + parked.y + 'px,0)');
+    followNode.classList.add('is-in');
+    /* The word changes on a slow cadence, not per frame: a saying that
+       re-lettered sixty times a second would be a strobe, not a friend. */
+    if (followFrames % SAYING_ENVELOPE.FOLLOW_EVERY_FRAMES === 1) {
+      setSayingText(followNode, SAYINGS[followFrames % SAYINGS.length]);
+    }
+    followPending = null;
+    if (!reduceMotion) stepTrail(parked.x, parked.y);
+  }
+
+  /* Each frame lays one more piece of text along the path and fades the
+     oldest: a fixed pool that is rewritten, never grown. Only the newest
+     slot changes its word, so the trail reads as words dropping away
+     rather than as a line of flickering type. */
+  function stepTrail(x, y) {
+    trailPoints.unshift({ x: x, y: y });
+    if (trailPoints.length > SAYING_ENVELOPE.TRAIL_MAX) trailPoints.pop();
+    var vp = sayingViewport();
+    var box = columnBox(vp.w, vp.h);
+    for (var i = 0; i < trailNodes.length; i += 1) {
+      var point = trailPoints[i];
+      if (!point) {
+        trailNodes[i].setAttribute('style', PARKED_TRANSFORM + ';opacity:0');
+        continue;
+      }
+      var parked = parkOutsideColumn(box, point.x, point.y);
+      var fade = 1 - i / SAYING_ENVELOPE.TRAIL_MAX;
+      if (i === 0) setSayingText(trailNodes[i], SAYINGS[trailPoints.length % SAYINGS.length]);
+      trailNodes[i].setAttribute('style', 'transform:translate3d(' + parked.x + 'px,' + parked.y
+        + 'px,0) scale(' + round2(0.7 + 0.3 * fade) + ');opacity:' + round2(0.92 * fade));
+    }
+  }
+
+  /* --- host discovery and the saying lifecycle ---------------------- */
+
+  var fxHost = null;
+  var carriersWired = 0;
+
+  /* One text writer for the whole page, so no style hand-rolls its own.
+     A host that has neither is simply left alone. */
+  function setNodeText(node, text) {
+    if (!node) return;
+    if ('textContent' in node) node.textContent = text;
+    else node.innerHTML = text;
+  }
+
+  function setSayingText(node, text) {
+    setNodeText(node, text);
+  }
+
+  /* One detacher for the whole page: hiding a decoration and retiring a
+     bubble are the same operation, and a host that cannot do it is a host
+     that has nothing left to detach. */
+  function detachNode(node) {
+    var parent = node ? node.parentNode : null;
+    if (!parent) return;
+    if (typeof parent.removeChild === 'function') parent.removeChild(node);
+    else if (typeof node.remove === 'function') node.remove();
+  }
+
+  /* Empty a host, BACKWARDS by index, so removing one child never shifts the
+     index of the next. `children` is a live `HTMLCollection` in a browser —
+     no `slice`, no `forEach` — and the one thing a layer clear must never do
+     is assume otherwise. */
+  function detachChildren(host) {
+    if (!host || !host.children) return 0;
+    var n = 0;
+    for (var i = host.children.length - 1; i >= 0; i -= 1) {
+      var child = host.children[i];
+      if (!child) continue;
+      detachNode(child);
+      n += 1;
+    }
+    return n;
+  }
+
+  function startSayings() {
+    carriersWired = wireCarriers();
+    mountReveals();
+    revealObserver = observeReveals(revealTargets);
+    var fx = sayingFx();
+    if (!fx) return;
+    mountDrift(fx);
+    mountFollower(fx);
+    mountTrail(fx);
+    if (!canSchedule) return;
+    scheduleDrift();
+    later(timedPop, SAYING_ENVELOPE.TIMED_EVERY_MS);
+  }
+
+  function sayingCountsBySection() {
+    var out = {};
+    for (var i = 0; i < SECTION_IDS.length; i += 1) {
+      var section = document.getElementById(SECTION_IDS[i]);
+      var host = section ? section.querySelector('.' + SAYINGS_LAYER_CLASS) : null;
+      out[SECTION_IDS[i]] = host ? host.querySelectorAll('.saying').length : 0;
+    }
+    return out;
+  }
+
+  /* Read-only, for this task's checks and the later passes. */
+  window.__sayingCount = function () { return distinctSayings().length; };
+  window.__sayingPool = function () { return distinctSayings().slice(); };
+  window.__cutenessState = cutenessState;
+
+  window.__sayingState = function () {
+    var revealed = 0;
+    for (var i = 0; i < revealTargets.length; i += 1) {
+      if (revealTargets[i].node.classList.contains('is-revealed')) revealed += 1;
+    }
+    var spots = document.querySelectorAll('.saying--spot').length;
+    return {
+      pool: SAYINGS.length,
+      distinct: distinctSayings().length,
+      carriers: document.querySelectorAll('[data-saying-carrier]').length,
+      carriersWired: carriersWired,
+      spots: spots,
+      perSection: sayingCountsBySection(),
+      reveals: {
+        total: revealTargets.length,
+        revealed: revealed,
+        observed: revealWatched,
+        watching: Boolean(revealObserver),
+        threshold: SAYING_ENVELOPE.REVEAL_THRESHOLD
+      },
+      drift: {
+        max: SAYING_ENVELOPE.DRIFT_MAX,
+        nodes: driftPool.length,
+        running: driftRunning(),
+        reseats: driftTick
+      },
+      pops: {
+        max: SAYING_ENVELOPE.POP_MAX,
+        live: popLiveNodes.length,
+        cursor: popCursor,
+        timed: timedTick
+      },
+      follow: { mounted: Boolean(followNode), pending: Boolean(followPending), frames: followFrames },
+      trail: { max: SAYING_ENVELOPE.TRAIL_MAX, nodes: trailNodes.length, points: trailPoints.length },
+      fx: Boolean(sayingFx()),
+      room: sayingRoom(),
+      reduceMotion: reduceMotion
+    };
+  };
+
+  /* ==================================================================
+     10. MATERIALISER
+     ================================================================== */
+  function styleString(el, motion) {
+    return '--x:' + el.x + ';--y:' + el.y + ';--size:' + el.size +
+      ';--scale:' + el.scale + ';--op:' + el.opacity +
+      ';--rotate:' + el.rotate + 'deg;--z:' + el.z + ';--tint:' + el.tint +
+      ';--bs:' + el.emphasis +
+      ';--delay:' + motion.delay + 's;--dur:' + motion.duration + 's';
+  }
+
+  function buildElement(cat, el, motion, live) {
+    var node = document.createElement('span');
+    node.className = 'd d--' + cat.key + ' v' + el.variant +
+      ' ' + motion.className + (live ? ' d--live' : ' d--idle');
+    node.setAttribute('data-cat', cat.key);
+    node.setAttribute('style', styleString(el, motion));
+    if (el.carrier) {
+      node.setAttribute('data-saying-carrier', el.carrier);
+      /* The saying, and the numbers that place its bubble without a
+         measurement: the seeded band coordinates are already known, so
+         the hover bubble inherits them instead of asking where the
+         carrier is. `tabindex` is the keyboard half of that contract. */
+      node.setAttribute('data-saying-index', sayingIndexFor(el.carrier, el.index));
+      node.setAttribute('data-sx', String(el.x));
+      node.setAttribute('data-sy', String(el.y));
+      node.setAttribute('data-sop', String(el.opacity));
+      /* Deliberately NOT a tab stop. These carriers live inside the
+         `aria-hidden` `.layer-mid` decoration layer, so making 271 of them
+         focusable would put 271 anonymous tab stops in front of a keyboard
+         user while still hiding them from assistive technology — the
+         `aria-hidden-focus` failure, with none of the keyboard reachability
+         to show for it. The 24 sayings they draw from are reachable through
+         the labelled `[data-saying-a11y]` stop in each section instead, which
+         lives outside the hidden layer. The focus/blur listeners below stay
+         wired so a carrier still responds if it is focused programmatically. */
+    }
+    if (el.reactive) node.setAttribute('data-reactive', 'true');
+    if (cat.strategy === 'svg') {
+      node.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+        + '<use href="#m-' + cat.key + '-' + el.variant + '"></use></svg>';
+    }
+    return node;
+  }
+
+  /* A bunny is a mark plus a hop wrapper. The wrapper carries placement and
+     depth, the mark carries the drawing and the hop transform, and both are
+     pointer-transparent — that pair is the whole pointer contract. */
+  function buildBunny(cat, el, motion, index) {
+    var viewport = bunnyViewport();
+    var mark = buildElement(cat, el, motion, false);
+    /* No ambient class: a bunny's ambient motion is its hop, and an ambient
+       animation on the same element would be overridden by it anyway. */
+    mark.className = mark.className.replace(/\bamb-[\w-]+/g, '');
+    var wrapper = document.createElement('span');
+    wrapper.className = 'bunny-hop';
+    wrapper.setAttribute('style', styleString(el, motion));
+    wrapper.appendChild(mark);
+    return {
+      index: index,
+      wrapper: wrapper,
+      mark: mark,
+      profile: bunnyProfile(index),
+      bx: el.x,
+      by: el.y,
+      opacity: el.opacity,
+      radius: round2(el.size * el.emphasis * el.scale / 2),
+      reactive: el.reactive === true,
+      offX: 0,
+      offY: 0,
+      /* Tracked in viewport pixels, because that is what the hop transform
+         is a delta of and what proximity is measured in. The seeded band
+         coordinate is the bunny's origin; `off` is how far it has hopped. */
+      x: round2(el.x * viewport.w),
+      y: round2(el.y * viewport.h),
+      busy: false,
+      resting: true,
+      hops: 0,
+      timer: 0,
+      token: 0,
+      flight: null,
+      last: null
+    };
+  }
+
+  /* ------------------------------------------------------------------
+     THE POOL
+     The failure mode the slider has to avoid is destroying and rebuilding
+     hundreds of nodes on every frame of a drag. So it never does. The
+     full roster is created ONCE, in full, at its own maximum, and every
+     density after that only MOUNTS a prefix of each category and unmounts
+     the rest. The nodes are therefore the same nodes at 60 and at 529,
+     which is what makes a full-range drag cheap enough to be smooth.
+
+     Two consequences are load-bearing and both are properties of the
+     roster rather than of the slider:
+
+       * `elementAt` is a pure function of (key, index, LAYOUT) for
+         everything except `section` and the bunny flags, so one build is
+         valid at every density. `section` is re-derived per density
+         below, which is why a proportional subset still spreads across
+         all seven bands instead of bunching into the first section.
+       * the ambient set is a RANKED partition of the plan, so it is
+         recomputed on every density change rather than inherited. The
+         budget therefore holds at 60 elements as exactly as at 529.
+     ------------------------------------------------------------------ */
+  var pool = null;
+  var mountedCounts = null;
+  var mountedLive = {};
+
+  function layerHosts() {
+    var hosts = {};
+    for (var i = 0; i < SECTION_IDS.length; i += 1) {
+      var section = document.getElementById(SECTION_IDS[i]);
+      hosts[SECTION_IDS[i]] = section ? section.querySelector('.layer-mid') : null;
+    }
+    return hosts;
+  }
+
+  /* The seam task 004 left open, now closed: a remount used to APPEND a
+     fresh roster to whatever the last mount had left behind, so mounting
+     twice silently doubled the page. Every mount starts from empty. */
+  function clearDecorationLayers() {
+    for (var i = 0; i < SECTION_IDS.length; i += 1) {
+      var section = document.getElementById(SECTION_IDS[i]);
+      var host = section ? section.querySelector('.layer-mid') : null;
+      if (!host) continue;
+      var stale = host.querySelectorAll('[data-cat]');
+      for (var s = 0; s < stale.length; s += 1) detachNode(stale[s]);
+    }
+    detachChildren(document.getElementById(BUNNY_LAYER_ID));
+    pool = null;
+    mountedCounts = null;
+    mountedLive = {};
+  }
+
+  /* The one-time build: every element the roster can ever mount, created
+     from the full plan so the descriptors are complete, and left for
+     `reconcilePool` to place. The viewport category is not pooled: a
+     bunny is a hop wrapper plus a mark and is rebuilt per density below. */
+  function createPool(layout) {
+    var full = planAt(1);
+    var built = { byCategory: {}, size: 0 };
+    for (var i = 0; i < ROSTER.length; i += 1) {
+      var cat = ROSTER[i];
+      if (cat.layer === 'viewport') continue;
+      var list = [];
+      for (var k = 0; k < cat.floor; k += 1) {
+        list.push(buildElement(cat, elementAt(cat.key, k, full, layout), motionFor(cat.key, k), false));
+      }
+      built.byCategory[cat.key] = list;
+      built.size += list.length;
+    }
+    pool = built;
+    return built;
+  }
+
+  /* The hot path. No node is created and none is destroyed: a category's
+     count decides which prefix of its pooled list is mounted, and the
+     plan's own split decides which section each mounted index lives in. */
+  function reconcilePool(plan, split) {
+    if (!pool) return;
+    var hosts = layerHosts();
+    var live = {};
+    var a;
+    for (a = 0; a < split.active.length; a += 1) {
+      live[split.active[a].key + '#' + split.active[a].index] = true;
+    }
+    for (var i = 0; i < ROSTER.length; i += 1) {
+      var cat = ROSTER[i];
+      if (cat.layer === 'viewport') continue;
+      var list = pool.byCategory[cat.key] || [];
+      var homes = plan.byCategory[cat.key];
+      var count = countFor(plan, cat.key);
+      for (var k = 0; k < list.length; k += 1) {
+        var node = list[k];
+        var slot = cat.key + '#' + k;
+        /* One class write per element, and only when the answer changed:
+           the ambient set is re-ranked here, so the running count is
+           never the previous density's left over. */
+        var isLive = live[slot] === true;
+        if (isLive !== (mountedLive[slot] === true)) {
+          node.classList.toggle('d--live', isLive);
+          node.classList.toggle('d--idle', !isLive);
+        }
+        if (k >= count) {
+          detachNode(node);
+          continue;
+        }
+        var host = hosts[sectionForIndex(homes, k)];
+        if (host && node.parentNode !== host) host.appendChild(node);
+      }
+    }
+    mountedLive = live;
+  }
+
+  function sameCounts(a, b) {
+    if (!a || !b) return false;
+    for (var i = 0; i < ROSTER.length; i += 1) {
+      var key = ROSTER[i].key;
+      if (a[key] !== b[key]) return false;
+    }
+    return true;
+  }
+
+  /* The herd is the one category whose OWN descriptor depends on the
+     plan — how many there are decides which bunnies are hero-scale and
+     which notice the cursor — so it is rebuilt rather than hidden. It is
+     at most 24 wrappers, not 505 nodes, and `resetBunnies()` inside it
+     cancels every hop and every timer that was in the air, which is
+     precisely the leak task 004 deferred to whoever remounted. */
+  function mountBunnies(plan) {
+    resetBunnies();
+    var layer = document.getElementById(BUNNY_LAYER_ID);
+    bunnyHost = layer;
+    bunnyBox = null;
+    bunnyBoxKey = '';
+    bunnies = [];
+    if (!layer) return 0;
+    detachChildren(layer);
+    var cat = BY_KEY[BUNNY_KEY];
+    var count = countFor(plan, BUNNY_KEY);
+    var layout = layoutAt(window.innerWidth);
+    for (var i = 0; i < count; i += 1) {
+      var bunny = buildBunny(cat, elementAt(BUNNY_KEY, i, plan, layout), motionFor(BUNNY_KEY, i), i);
+      layer.appendChild(bunny.wrapper);
+      bunnies.push(bunny);
+    }
+    return count;
+  }
+
+  /* A full remount: clear everything the last mount left, build the whole
+     pool, then place it at this density. `mount` is the only function that
+     creates decoration nodes, and calling it twice is a no-op rather than a
+     doubling. */
+  function mount(density) {
+    var plan = planAt(density);
+    var layout = layoutAt(window.innerWidth);
+    /* One pass over the partition, so every element gets exactly the
+       descriptor it was ranked with — the stagger is never recomputed. */
+    var split = partition(plan, MOTION_BUDGET);
+    clearDecorationLayers();
+    createPool(layout);
+    reconcilePool(plan, split);
+    mountBunnies(plan);
+    mountedCounts = countVector(plan);
+    return plan;
+  }
+
+  /* The seven per-section live counts, read back off the MOUNTED DOM rather
+     than off the plan, so the running count can never drift from what is
+     really on the page — including after a density change moved elements
+     between bands. Read once here and used by both the initial mount and
+     every density change after it. */
+  function activeBySection() {
+    var out = {};
+    var total = 0;
+    for (var i = 0; i < SECTION_IDS.length; i += 1) {
+      var section = document.getElementById(SECTION_IDS[i]);
+      var count = section ? section.querySelectorAll('.d--live').length : 0;
+      out[SECTION_IDS[i]] = count;
+      total += count;
+    }
+    return { bySection: out, total: total };
+  }
+
+  function suspendOffScreen() {
+    var sections = [];
+    var read = activeBySection();
+    for (var i = 0; i < SECTION_IDS.length; i += 1) {
+      var section = document.getElementById(SECTION_IDS[i]);
+      if (section) sections.push(section);
+    }
+    var controller = createSuspension(read.bySection, read.total);
+    controller.observe(sections);
+    return controller;
+  }
+
+  /* A density change re-reads the seven per-section live counts into the
+     EXISTING controller: the observer, the suspension flags and the
+     running total all stay, and only the numbers are refreshed. */
+  function refreshSuspension() {
+    if (!suspension) return 0;
+    return suspension.refresh(activeBySection().bySection);
+  }
+
+  /* The published remount is exactly the density path's own sequence:
+     remount, stand the herd back up, refresh the two-budget bookkeeping.
+     `mount` on its own deliberately does NOT arm hops — `start` owns that
+     ordering, and arming them twice would leak the first set of timers. */
+  function remount(density) {
+    var plan = mount(density);
+    startBunnyHops();
+    refreshSuspension();
+    return plan;
+  }
+
+  /* ==================================================================
+      11. THE CUTENESS SLIDER
+      One native range input that scales the roster from cozy to
+      overwhelming. Three decisions carry it:
+
+        * THE SLIDER IS NORMALISED. Its own values are 0..100 and nothing
+          else; the element counts live only in `cutenessCount`. So the
+          control is independent of the roster: raise a floor and the
+          maximum follows, without touching the markup or the keyboard
+          behaviour a user already learned.
+
+        * THE BUDGET IS DISTRIBUTED, NOT TRUNCATED. `cutenessCount` maps
+          the value onto a mounted TOTAL, that total onto a density, and
+          the density onto `planAt`, which already apportions each
+          category proportionally to its own floor. Truncating category by
+          category would have been cheaper to reason about and would have
+          stripped whole categories at the cozy end; proportional scaling
+          keeps all nineteen represented, cross-cutting sparkles and
+          sakura included.
+
+        * THE DRAG NEVER REMOUNTS SYNCHRONOUSLY. The `input` handler
+          stores a value and returns. One `requestAnimationFrame`
+          callback, scheduled only when none is already pending, does the
+          work — and it does not re-arm itself, so it is a coalescer and
+          not a loop. The work itself touches no new nodes: it mounts and
+          unmounts a prefix of the pool that already exists.
+
+      And because the minimum is the cozy end rather than nothing, no
+      density is ever empty: every category keeps at least one element.
+      ================================================================== */
+  var CUTENESS_CONTROL_ID = 'cuteness-control';
+  var CUTENESS_INPUT_ID = 'cuteness-slider';
+  var CUTENESS_READOUT_ID = 'cuteness-readout';
+
+  var CUTENESS = Object.freeze({
+    MIN: 0,
+    MAX: 100,
+    STEP: 1,
+    /* The cozy floor: every one of the nineteen categories still has at
+       least one element at this density, because the smallest category
+       floor is 10 and round(10 * 60/529) is 1. */
+    COZY: 60,
+    /* Where the words change. Two thirds of the range, so the cozy band
+       is wide enough to actually dwell in and the overwhelming band is
+       the last third. */
+    MEDIUM_AT: 0.34,
+    MAX_AT: 0.67
+  });
+
+  var cutenessInput = null;
+  var cutenessReadout = null;
+  var cutenessPending = null;
+  var cutenessFrame = 0;
+  var cutenessApplied = CUTENESS.MAX;
+  var cutenessEvents = 0;
+  var cutenessFrames = 0;
+  /* A host with no frame queue (a prerender pass, a headless harness)
+     must still honour the control rather than silently ignoring it. */
+  var canFrame = typeof requestAnimationFrame === 'function';
+
+  /* Normalised value in, normalised density out. */
+  function cutenessUnit(value) {
+    var v = Number(value);
+    if (!(v >= CUTENESS.MIN)) return 0;
+    if (v > CUTENESS.MAX) return 1;
+    return (v - CUTENESS.MIN) / (CUTENESS.MAX - CUTENESS.MIN);
+  }
+
+  function cutenessCount(value) {
+    return Math.round(CUTENESS.COZY + cutenessUnit(value) * (FLOOR_TOTAL - CUTENESS.COZY));
+  }
+
+  function cutenessDensity(count) {
+    return clamp((Number(count) || 0) / FLOOR_TOTAL, 0, 1);
+  }
+
+  function cutenessLevel(value) {
+    var t = cutenessUnit(value);
+    if (t < CUTENESS.MEDIUM_AT) return 'cozy';
+    if (t < CUTENESS.MAX_AT) return 'medium';
+    return 'overwhelming';
+  }
+
+  /* One number per category, keyed in roster order, including the zeros:
+     a vector is what the fast path compares, and a missing key would read
+     as "unchanged" when it means "gone". */
+  function countVector(plan) {
+    var out = {};
+    for (var i = 0; i < ROSTER.length; i += 1) out[ROSTER[i].key] = countFor(plan, ROSTER[i].key);
+    return out;
+  }
+
+  /* Largest-remainder apportionment of a page-total budget across the
+     nineteen category floors: proportional by construction and exact in
+     total, which is what lets the readout say "60 decorations" and mean
+     it. Every category is bumped to one while the budget can still pay
+     for one each, so the cozy end loses no motif at all — at 60 the
+     smallest floor of 10 already lands on 1, so that bump is a guarantee
+     rather than a rule. */
+  function apportionFloors(budget) {
+    var out = {};
+    var remainders = [];
+    var total = 0;
+    var i;
+    for (i = 0; i < ROSTER.length; i += 1) {
+      var exact = (budget * ROSTER[i].floor) / FLOOR_TOTAL;
+      out[ROSTER[i].key] = Math.floor(exact);
+      remainders.push({ i: i, frac: exact - Math.floor(exact) });
+      total += out[ROSTER[i].key];
+    }
+    for (i = 0; i < ROSTER.length && total < budget; i += 1) {
+      if (out[ROSTER[i].key] === 0) { out[ROSTER[i].key] = 1; total += 1; }
+    }
+    remainders.sort(function (a, b) { return b.frac - a.frac || a.i - b.i; });
+    var k = 0;
+    while (total < budget) {
+      out[ROSTER[remainders[k % remainders.length].i].key] += 1;
+      total += 1;
+      k += 1;
+    }
+    return out;
+  }
+
+  /* The same shape `planAt` produces, built from counts that are already
+     exact. The per-section split is the roster's own largest-remainder
+     apportionment, so a category still spreads across its homes with no
+     section starved. */
+  function planFromCounts(counts, density) {
+    var plan = { density: density, byCategory: {} };
+    for (var i = 0; i < ROSTER.length; i += 1) {
+      var cat = ROSTER[i];
+      var weights = cat.sections === 'all' ? evenWeights() : cat.sections;
+      plan.byCategory[cat.key] = splitCounts(weights, counts[cat.key] || 0);
+    }
+    return plan;
+  }
+
+  function cutenessPlan(value) {
+    var mounted = cutenessCount(value);
+    var density = cutenessDensity(mounted);
+    var counts = apportionFloors(mounted);
+    return {
+      value: Math.max(CUTENESS.MIN, Math.min(CUTENESS.MAX, Number(value) || 0)),
+      unit: cutenessUnit(value),
+      level: cutenessLevel(value),
+      mounted: mounted,
+      density: density,
+      plan: planFromCounts(counts, density),
+      counts: counts
+    };
+  }
+
+  /* The words, in the two places a sighted reader and a screen reader
+     both need them. `aria-valuetext` is the single source for assistive
+     technology; the readout is `aria-hidden` so the level is announced
+     once and not twice on every keypress. */
+  function updateCutenessChrome(mapped) {
+    if (!cutenessInput) return;
+    cutenessInput.setAttribute('aria-valuetext', mapped.level + ' — ' + mapped.mounted + ' decorations');
+    setNodeText(cutenessReadout, mapped.level + ' · ' + mapped.mounted);
+  }
+
+  /* The one and only remount path a drag can reach. It records a value
+     and returns: no count is computed, no plan is built, no node moves. */
+  function onCutenessInput(event) {
+    var node = (event && event.currentTarget) ? event.currentTarget : cutenessInput;
+    if (!node) return;
+    cutenessEvents += 1;
+    cutenessPending = clamp(Number(node.value) || 0, CUTENESS.MIN, CUTENESS.MAX);
+    if (!canFrame) {
+      applyCuteness(cutenessPending);
+      return;
+    }
+    /* Coalesce: a frame is already booked, and it will pick up whatever
+       value is current when it runs. */
+    if (cutenessFrame) return;
+    cutenessFrame = requestAnimationFrame(applyCutenessFrame);
+  }
+
+  /* The coalescer. One frame, one pass, whatever the drag did in between
+     — and it never asks for another frame, so a drag cannot turn this
+     into a loop that competes with the ambient animations. */
+  function applyCutenessFrame() {
+    cutenessFrame = 0;
+    var value = cutenessPending;
+    cutenessPending = null;
+    if (typeof value === 'number') applyCuteness(value);
+  }
+
+  function applyCuteness(value) {
+    var mapped = cutenessPlan(value);
+    cutenessFrames += 1;
+    cutenessApplied = mapped.value;
+    if (cutenessInput && typeof cutenessInput.value !== 'undefined') {
+      cutenessInput.value = String(mapped.value);
+    }
+    updateCutenessChrome(mapped);
+    if (!pool) return mapped;
+    /* The fast path: a drag step that does not move a single category
+       across a rounding boundary writes nothing to the DOM at all. */
+    if (sameCounts(mapped.counts, mountedCounts)) return mapped;
+    var split = partition(mapped.plan, MOTION_BUDGET);
+    reconcilePool(mapped.plan, split);
+    if (mountedCounts === null || mountedCounts[BUNNY_KEY] !== mapped.counts[BUNNY_KEY]) {
+      mountBunnies(mapped.plan);
+      startBunnyHops();
+    }
+    mountedCounts = mapped.counts;
+    refreshSuspension();
+    return mapped;
+  }
+
+  function startCuteness() {
+    cutenessInput = document.getElementById(CUTENESS_INPUT_ID);
+    cutenessReadout = document.getElementById(CUTENESS_READOUT_ID);
+    if (!cutenessInput) return null;
+    /* The listener lives on the control itself, never on the document:
+       task 007 owns the single document-level click handler, and a
+       listener here is the reason clicking the thumb cannot double-fire
+       anything. */
+    if (typeof cutenessInput.addEventListener === 'function') {
+      cutenessInput.addEventListener('input', onCutenessInput);
+    }
+    return cutenessInput;
+  }
+
+  function cutenessState() {
+    var mapped = cutenessPlan(cutenessApplied);
+    var counts = rosterCounts();
+    var live = 0;
+    for (var key in mountedLive) if (mountedLive[key]) live += 1;
+    return {
+      present: Boolean(cutenessInput),
+      value: cutenessApplied,
+      applied: cutenessApplied,
+      pending: cutenessPending,
+      unit: round3(mapped.unit),
+      level: mapped.level,
+      valuetext: cutenessInput ? cutenessInput.getAttribute('aria-valuetext') : null,
+      mounted: counts.total,
+      counts: mapped.counts,
+      domCounts: counts.perCategory,
+      categories: Object.keys(counts.perCategory).filter(function (k) { return counts.perCategory[k] > 0; }).length,
+      min: CUTENESS.MIN,
+      max: CUTENESS.MAX,
+      step: CUTENESS.STEP,
+      cozy: CUTENESS.COZY,
+      floorTotal: FLOOR_TOTAL,
+      events: cutenessEvents,
+      frames: cutenessFrames,
+      scheduled: cutenessFrame,
+      pool: pool ? pool.size : 0,
+      live: live,
+      bunnies: bunnies.length,
+      motion: suspension
+        ? { activeTotal: suspension.state.activeTotal, running: suspension.state.running }
+        : null,
+      reduceMotion: reduceMotion
+    };
+  }
+
+  /* ==================================================================
+      12. THE SINGLE CLICK DISPATCH
+      One listener for the whole page. Everything a click earns — the
+      chime, the saying, the bloom — happens inside it, and it is
+      registered exactly once, however many decorations are mounted.
+
+      That is the whole design, and it is structural rather than
+      hopeful. At 529 elements plus 24 bunnies, per-element handlers
+      would multiply the reward count with the density; a single
+      delegated listener makes "exactly one chime per click" a property
+      of the page instead of a thing to remember at every call site.
+      Nothing else on the page listens for `click` — the saying
+      machinery is reached through its own hook, and the slider is
+      reached through its own `input` listener.
+
+      Three rewards, in this order:
+
+        1. A DING A LING. A lazily created `AudioContext` — created on
+           the FIRST click, because a context built at load starts
+           suspended and no browser will start one before a user
+           gesture. Four notes per click: root, major 3rd, perfect 5th
+           and major 7th, spread across `triangle`, `sine` and
+           `square`, each through its own gain envelope — a fast attack
+           and an exponential decay — so a chord rings instead of
+           clicking. Every node is stopped and disconnected the moment
+           its envelope ends, so a long clicking session cannot pile up
+           live oscillators.
+
+        2. A SAYING, through task 005's own `window.__popSaying` hook.
+           Not reimplemented, and above all not re-listened for: a
+           second click listener is the exact failure this task exists
+           to prevent.
+
+        3. A BLOOM at the pointer: one container holding a randomised
+           mix of the roster's own sparkle, heart and petal shapes,
+           flown outward on `transform`/`opacity` and retired whole on
+           the first `animationend`. Concurrent bursts are hard-capped
+           and the oldest is recycled, so sustained clicking cannot
+           grow the DOM.
+
+      And the one distinction this task must not blur: reduced motion
+      governs VISUAL motion only. Burst pieces fade where they were made
+      instead of flying, but the chime is never gated on it, because a
+      motion preference is not an audio preference.
+      ================================================================== */
+  var CLICK = Object.freeze({
+    /* A major pentatonic high on the keyboard: degrees 1, 2, 3, 5 and 6.
+       Every consecutive pair is consonant, so a fast clicking session is
+       a rising music-box phrase rather than a cluster, and the top of the
+       range is still nowhere near shrill. */
+    SCALE: Object.freeze([523.25, 587.33, 659.26, 783.99, 880]),
+    /* root 1, major 3rd 4/3, perfect 5th 3/2, major 7th 15/8. */
+    RATIOS: Object.freeze([1, 4 / 3, 3 / 2, 15 / 8]),
+    /* Which oscillator plays which degree. Four notes, three types: the
+       major 7th reuses the root's triangle, so the brightest interval is
+       also the softest voice and the chord rings instead of buzzing. */
+    VOICES: Object.freeze([0, 1, 2, 0]),
+    MASTER_GAIN: 0.16,
+    ATTACK: 0.012,
+    DECAY: 0.86,
+    /* An exponential ramp cannot reach zero, and a hard cut is a click. */
+    FLOOR: 0.0001,
+    /* The hard ceiling on live bursts. */
+    MAX_BURSTS: 12,
+    PIECES_MIN: 8,
+    PIECES_MAX: 16,
+    /* A burst has to READ against a page that is already pink, so the
+       pieces are at least as big as the roster's own (16-26px) and the
+       ring is wide enough to be a shape rather than a smudge. */
+    REACH_MIN: 58,
+    REACH_MAX: 158,
+    PIECE_MIN_PX: 14,
+    PIECE_MAX_PX: 32,
+    FLY_MS: 780,
+    STILL_MS: 700,
+    /* The self-removal fallback, and only ever reached if `animationend`
+       fails to arrive. Comfortably past the longest piece life. */
+    REAP_MS: 1200
+  });
+
+  /* All three oscillator types, one line each. */
+  var CHIME_TYPES = Object.freeze([
+    'triangle',
+    'sine',
+    'square'
+  ]);
+
+  var audio = {
+    ctx: null,
+    master: null,
+    created: 0,
+    resumes: 0,
+    triggers: 0,
+    blocked: 0,
+    pitchIndex: 0,
+    voices: 0,
+    oscillators: 0,
+    last: null
+  };
+
+  var clickDispatch = { clicks: 0, sayings: 0, last: null };
+
+  function canMakeAudio() {
+    return typeof window.AudioContext === 'function'
+      || typeof window.webkitAudioContext === 'function';
+  }
+
+  /* Lazy, guarded, and reused. A host with no Web Audio at all gets a
+   * null context and no exception — the click still earns its saying and
+   * its bloom, because audio is never allowed to be the reason a click
+   * fails. */
+  function audioContext() {
+    if (audio.ctx) return audio.ctx;
+    var Ctor = window.AudioContext || window.webkitAudioContext;
+    if (typeof Ctor !== 'function') return null;
+    var ctx = null;
+    var master = null;
+    try {
+      ctx = new Ctor();
+      master = ctx.createGain();
+      master.gain.value = CLICK.MASTER_GAIN;
+      master.connect(ctx.destination);
+    } catch (err) {
+      audio.blocked += 1;
+      return null;
+    }
+    audio.ctx = ctx;
+    audio.master = master;
+    audio.created += 1;
+    return ctx;
+  }
+
+  /* Autoplay policy: the first click IS the gesture, so the context is
+   * resumed here rather than at load. A refusal is counted, not thrown. */
+  function resumeAudio() {
+    var ctx = audio.ctx;
+    if (!ctx || ctx.state !== 'suspended') return false;
+    if (typeof ctx.resume !== 'function') return false;
+    try {
+      ctx.resume();
+      audio.resumes += 1;
+    } catch (err) {
+      audio.blocked += 1;
+      return false;
+    }
+    return true;
+  }
+
+  /* The four scheduled frequencies for a base pitch. Pure, so the chord a
+   * click will play is a fact a test can read rather than a thing it has
+   * to hear. */
+  function chordAt(base) {
+    var out = [];
+    for (var i = 0; i < CLICK.RATIOS.length; i += 1) {
+      out.push({
+        frequency: round2(base * CLICK.RATIOS[i]),
+        ratio: CLICK.RATIOS[i],
+        type: CHIME_TYPES[CLICK.VOICES[i]]
+      });
+    }
+    return out;
+  }
+
+  function playVoice(ctx, note, at) {
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.type = note.type;
+    osc.frequency.setValueAtTime(note.frequency, at);
+    var end = at + CLICK.ATTACK + CLICK.DECAY;
+    /* Up from a near-zero floor and back down to it: a gain that jumps
+     * from silence to full is a click, and one that stops dead is a
+     * second one. */
+    gain.gain.setValueAtTime(CLICK.FLOOR, at);
+    gain.gain.exponentialRampToValueAtTime(CLICK.MASTER_GAIN, at + CLICK.ATTACK);
+    gain.gain.exponentialRampToValueAtTime(CLICK.FLOOR, end);
+    osc.connect(gain);
+    gain.connect(audio.master);
+    audio.oscillators += 1;
+    audio.voices += 1;
+    /* The envelope's own teardown. `stop()` retires the oscillator and
+     * `onended` unhooks both nodes, so a session that rings a thousand
+     * chimes holds no more live nodes than one that rang three. */
+    osc.onended = function () {
+      audio.voices -= 1;
+      osc.disconnect();
+      gain.disconnect();
+    };
+    osc.start(at);
+    osc.stop(end);
+    return osc;
+  }
+
+  function dingALing() {
+    var base = CLICK.SCALE[audio.pitchIndex];
+    var index = audio.pitchIndex;
+    /* The pitch advances on every click, including one the browser
+       refuses to sound, so the sequence a reader hears is the sequence
+       they clicked. */
+    audio.pitchIndex = (audio.pitchIndex + 1) % CLICK.SCALE.length;
+    var notes = chordAt(base);
+    var ctx = audioContext();
+    if (!ctx || !audio.master) {
+      audio.blocked += 1;
+      return null;
+    }
+    resumeAudio();
+    /* Still suspended after the gesture: schedule nothing. Nodes started
+     * against a frozen clock never reach their stop time, so scheduling
+     * into a context that will not run is exactly how a long session
+     * would accumulate live oscillators. */
+    if (ctx.state === 'suspended') {
+      audio.blocked += 1;
+      return null;
+    }
+    var at = Number(ctx.currentTime) || 0;
+    for (var i = 0; i < notes.length; i += 1) playVoice(ctx, notes[i], at);
+    audio.triggers += 1;
+    audio.last = { index: index, base: base, notes: notes, at: round3(at) };
+    return notes;
+  }
+
+  function chimeState() {
+    return {
+      supported: canMakeAudio(),
+      created: audio.created,
+      resumes: audio.resumes,
+      triggers: audio.triggers,
+      blocked: audio.blocked,
+      attempts: clickDispatch.clicks,
+      pitchIndex: audio.pitchIndex,
+      scale: CLICK.SCALE.slice(),
+      ratios: CLICK.RATIOS.slice(),
+      types: CHIME_TYPES.slice(),
+      voices: CLICK.VOICES.slice(),
+      contextState: audio.ctx ? audio.ctx.state : null,
+      liveVoices: audio.voices,
+      oscillators: audio.oscillators,
+      last: audio.last
+    };
+  }
+
+  /* ---- the bloom ------------------------------------------------- */
+
+  var BLOOM_LAYER_ID = 'bloom-layer';
+  /* The roster's own shape vocabulary. A bloom introduces no fourth
+   * sparkle, no second heart and no new petal: it re-mounts the three
+   * the meadow already uses. */
+  var BLOOM_KINDS = Object.freeze(['sparkles', 'hearts', 'sakura']);
+  /* Dark enough to read on the meadow's own gradient. The pale tints the
+   * roster seeds its background decoration with are exactly the ones a
+   * transient reward cannot afford: a cream sparkle on a lilac band is
+   * invisible, and an invisible reward is not a reward. */
+  var BLOOM_TINTS = Object.freeze([
+    'var(--pink-500)', 'var(--pink-600)', 'var(--pink-700)', 'var(--purple-400)',
+    'var(--purple-500)', 'var(--purple-600)', 'var(--rainbow-2)', 'var(--rainbow-4)'
+  ]);
+
+  var bloomHost = null;
+  var liveBursts = [];
+  var bloomSeq = 0;
+  var bloomCreated = 0;
+  var bloomRetired = 0;
+  var bloomRecycled = 0;
+  var bloomPieces = 0;
+  var lastBloom = null;
+
+  function bloomLayer() {
+    if (bloomHost !== null) return bloomHost;
+    bloomHost = document.getElementById(BLOOM_LAYER_ID);
+    return bloomHost;
+  }
+
+  /* One burst, one removal, however the removal is reached — the first
+   * `animationend` or the fallback timer. The guard is what makes the
+   * `once` listener safe rather than merely tidy: the pieces between them
+   * produce many `animationend` events, and only the first is a reason to
+   * take the container out. */
+  function retireBurst(burst) {
+    if (!burst || burst.retired) return false;
+    burst.retired = true;
+    if (typeof burst.node.removeEventListener === 'function') {
+      burst.node.removeEventListener('animationend', burst.onEnd);
+    }
+    cancelTimer(burst.reaper);
+    burst.reaper = 0;
+    var at = liveBursts.indexOf(burst);
+    if (at >= 0) liveBursts.splice(at, 1);
+    bloomRetired += 1;
+    detachNode(burst.node);
+    return true;
+  }
+
+  function bloomPieceStyle(r, reach, angle, size) {
+    return '--bx:' + round2(Math.cos(angle) * reach) + 'px'
+      + ';--by:' + round2(Math.sin(angle) * reach) + 'px'
+      + ';--size:' + size
+      + ';--op:' + round2(0.82 + r() * 0.18)
+      + ';--scale:' + round2(0.75 + r() * 0.55)
+      + ';--rotate:' + Math.round(r() * 360) + 'deg'
+      + ';--tint:' + BLOOM_TINTS[Math.floor(r() * BLOOM_TINTS.length)];
+  }
+
+  function bloomAt(x, y) {
+    var host = bloomLayer();
+    if (!host) return null;
+    var seq = bloomSeq;
+    bloomSeq += 1;
+    var at = { x: round2(Number(x) || 0), y: round2(Number(y) || 0) };
+    /* The cap is a CEILING, not a target. At the ceiling the oldest live
+       burst is retired and its slot reused, so a reader who clicks two
+       hundred times is still holding the same twelve containers. */
+    while (liveBursts.length >= CLICK.MAX_BURSTS) {
+      if (!retireBurst(liveBursts[0])) break;
+      bloomRecycled += 1;
+    }
+    var still = reduceMotion === true;
+    var life = still ? CLICK.STILL_MS : CLICK.FLY_MS;
+    var node = document.createElement('span');
+    node.className = 'bloom ' + (still ? 'bloom--still' : 'bloom--fly');
+    node.setAttribute('data-bloom-x', String(at.x));
+    node.setAttribute('data-bloom-y', String(at.y));
+    node.setAttribute('style', '--bx:' + at.x + 'px;--by:' + at.y + 'px'
+      + ';--life:' + round3(life / 1000) + 's');
+    var span = CLICK.PIECES_MAX - CLICK.PIECES_MIN + 1;
+    var count = CLICK.PIECES_MIN
+      + Math.floor(rngFor('bloom:' + BUNNY_KEY, seq)() * span);
+    var kinds = [];
+    for (var i = 0; i < count; i += 1) {
+      var r = rngFor('bloom-piece:' + BUNNY_KEY, seq * 32 + i);
+      var kind = BLOOM_KINDS[Math.floor(r() * BLOOM_KINDS.length)];
+      var piece = document.createElement('span');
+      piece.setAttribute('data-bloom-piece', kind);
+      piece.className = 'bloom-piece d d--' + kind + ' v' + Math.floor(r() * 4);
+      /* Evenly around the circle with a seeded wobble, so the burst reads
+       * as a ring rather than as a clump, and never repeats exactly. */
+      var angle = (i / count) * Math.PI * 2 + (r() - 0.5) * 0.7;
+      var reach = CLICK.REACH_MIN + r() * (CLICK.REACH_MAX - CLICK.REACH_MIN);
+      var size = Math.round(CLICK.PIECE_MIN_PX + r() * (CLICK.PIECE_MAX_PX - CLICK.PIECE_MIN_PX));
+      piece.setAttribute('style', bloomPieceStyle(r, reach, angle, size));
+      if (kind === 'sakura') {
+        /* The petal is an SVG-strategy category in the roster, so it
+           clones the shared sprite rather than inventing a drawing. */
+        piece.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+          + '<use href="#m-sakura-' + Math.floor(r() * 4) + '"></use></svg>';
+      }
+      node.appendChild(piece);
+      kinds.push(kind);
+      bloomPieces += 1;
+    }
+    var burst = {
+      node: node,
+      seq: seq,
+      still: still,
+      life: life,
+      pieces: count,
+      kinds: kinds,
+      reaper: 0,
+      retired: false,
+      onEnd: null
+    };
+    burst.onEnd = function () { retireBurst(burst); };
+    if (typeof node.addEventListener === 'function') {
+      node.addEventListener('animationend', burst.onEnd, { once: true });
+    }
+    host.appendChild(node);
+    liveBursts.push(burst);
+    /* Nothing here depends on `animationend` arriving: a host that never
+       fires it still retires the burst, just later. */
+    burst.reaper = later(function () { retireBurst(burst); }, life + CLICK.REAP_MS);
+    bloomCreated += 1;
+    lastBloom = { x: at.x, y: at.y, pieces: count, kinds: kinds, still: still, life: life, seq: seq };
+    return burst;
+  }
+
+  function bloomState() {
+    return {
+      host: Boolean(bloomLayer()),
+      live: liveBursts.length,
+      max: CLICK.MAX_BURSTS,
+      created: bloomCreated,
+      retired: bloomRetired,
+      recycled: bloomRecycled,
+      pieces: bloomPieces,
+      kinds: BLOOM_KINDS.slice(),
+      last: lastBloom
+    };
+  }
+
+  /* ---- the one handler -------------------------------------------- */
+
+  function onPageClick(event) {
+    /* The pointer position is read off the event, never measured: a
+       layout read in here would be the one thing that could make a click
+       expensive, and the page has no need to ask where anything is. */
+    var x = event && typeof event.clientX === 'number' ? event.clientX : 0;
+    var y = event && typeof event.clientY === 'number' ? event.clientY : 0;
+    clickDispatch.clicks += 1;
+    var notes = dingALing();
+    var saying = null;
+    if (typeof window.__popSaying === 'function') {
+      clickDispatch.sayings += 1;
+      saying = window.__popSaying(x, y);
+    }
+    var burst = bloomAt(x, y);
+    clickDispatch.last = {
+      x: round2(x),
+      y: round2(y),
+      notes: notes ? notes.length : 0,
+      said: Boolean(saying),
+      bloomed: Boolean(burst)
+    };
+    return burst;
+  }
+
+  /* Read-only, for this task's checks and the later passes. */
+  window.__clickState = function () {
+    return {
+      listeners: 1,
+      clicks: clickDispatch.clicks,
+      saying: { calls: clickDispatch.sayings, popHook: typeof window.__popSaying === 'function' },
+      chime: chimeState(),
+      bloom: bloomState(),
+      last: clickDispatch.last,
+      reduceMotion: reduceMotion
+    };
+  };
+
+  /* ==================================================================
+      13. VERIFICATION SURFACES
+      Read-only, for this task's checks and for the later network-
+      cleanliness pass. Not features.
+      ================================================================== */
+  function rosterCounts() {
+    var counted = {};
+    var nodes = document.querySelectorAll('[data-cat]');
+    var i;
+    for (i = 0; i < nodes.length; i += 1) {
+      var key = nodes[i].dataset.cat;
+      counted[key] = (counted[key] || 0) + 1;
+    }
+    /* Keyed in roster order so later assertions read like the roster table. */
+    var perCat = {};
+    var total = 0;
+    for (i = 0; i < ROSTER.length; i += 1) {
+      var name = ROSTER[i].key;
+      perCat[name] = counted[name] || 0;
+      total += perCat[name];
+      delete counted[name];
+    }
+    for (var stray in counted) {
+      perCat[stray] = counted[stray];
+      total += counted[stray];
+    }
+    return { perCategory: perCat, total: total };
+  }
+
+  window.__rosterCounts = rosterCounts;
+  window.__roster = Object.freeze({
+    SECTION_IDS: SECTION_IDS,
+    DEPTHS: DEPTHS,
+    ROSTER: ROSTER,
+    floorTotal: function () { return FLOOR_TOTAL; },
+    category: category,
+    layoutAt: layoutAt,
+    splitCounts: splitCounts,
+    planAt: planAt,
+    planTotal: planTotal,
+    perCategory: perCategory,
+    perSection: perSection,
+    sectionsFor: sectionsFor,
+    elementAt: elementAt,
+    pointerEventsFor: pointerEventsFor,
+    motion: Object.freeze({
+      MOTION_BUDGET: MOTION_BUDGET,
+      ACTIVE_FRACTION: ACTIVE_FRACTION,
+      AMBIENT: AMBIENT,
+      AMBIENT_DURATIONS: AMBIENT_DURATIONS,
+      STAGGER_WINDOW: STAGGER_WINDOW,
+      SUSPEND_ROOT_MARGIN: SUSPEND_ROOT_MARGIN,
+      profileFor: profileFor,
+      motionFor: motionFor,
+      partition: partition
+    }),
+    bunnies: Object.freeze({
+      LAYER_ID: BUNNY_LAYER_ID,
+      HERO_SCALE: HERO_SCALE,
+      REACTIVE_MIN: REACTIVE_MIN,
+      REACTIVE_MAX: REACTIVE_MAX,
+      PROXIMITY_PX: PROXIMITY_PX,
+      HOP: BUNNY_HOP,
+      profileFor: bunnyProfile,
+      reactiveIndexes: reactiveIndexes,
+      hopStep: hopStep,
+      wrapDelta: wrapDelta,
+      hopFrames: hopFrames,
+      withinProximity: withinProximity,
+      withinViewport: withinViewport,
+      hopRoom: hopRoom,
+      state: bunnyState
+    }),
+    sayings: Object.freeze({
+      SAYINGS: SAYINGS,
+      SAYINGS_LAYER_CLASS: SAYINGS_LAYER_CLASS,
+      SAYING_FX_ID: SAYING_FX_ID,
+      REVEAL_PLAN: REVEAL_PLAN,
+      envelope: SAYING_ENVELOPE,
+      distinct: distinctSayings,
+      indexFor: sayingIndexFor,
+      marginSpot: marginSpot,
+      columnBox: columnBox,
+      insideColumn: insideColumn,
+      parkOutsideColumn: parkOutsideColumn,
+      state: window.__sayingState
+    }),
+    cuteness: Object.freeze({
+      CONTROL_ID: CUTENESS_CONTROL_ID,
+      INPUT_ID: CUTENESS_INPUT_ID,
+      READOUT_ID: CUTENESS_READOUT_ID,
+      MIN: CUTENESS.MIN,
+      MAX: CUTENESS.MAX,
+      STEP: CUTENESS.STEP,
+      MEDIUM_AT: CUTENESS.MEDIUM_AT,
+      MAX_AT: CUTENESS.MAX_AT,
+      COZY: CUTENESS.COZY,
+      FLOOR_TOTAL: FLOOR_TOTAL,
+      unit: cutenessUnit,
+      countFor: cutenessCount,
+      densityFor: cutenessDensity,
+      level: cutenessLevel,
+      planFor: cutenessPlan,
+      apportion: apportionFloors,
+      remount: remount,
+      apply: applyCuteness,
+      state: cutenessState
+    }),
+    click: Object.freeze({
+      BLOOM_LAYER_ID: BLOOM_LAYER_ID,
+      BLOOM_KINDS: BLOOM_KINDS,
+      TYPES: CHIME_TYPES,
+      envelope: CLICK,
+      chordAt: chordAt,
+      canMakeAudio: canMakeAudio,
+      state: window.__clickState
+    })
+  });
+  window.__bunnyState = bunnyState;
+
+  /* Ambient motion respects `prefers-reduced-motion`. The query is read
+     once and then only on change, so neither the accessor nor anything
+     else has to touch the media list per frame. */
+  var motionQuery = typeof window.matchMedia === 'function'
+    ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+  var reduceMotion = motionQuery ? motionQuery.matches === true : false;
+  if (motionQuery && typeof motionQuery.addEventListener === 'function') {
+    motionQuery.addEventListener('change', function (event) {
+      reduceMotion = event.matches === true;
+      /* Motion stops; nothing is removed, and nothing is silenced — a
+         motion preference is not an audio preference. */
+      if (reduceMotion) stopBunnyHops();
+    });
+  }
+
+  var suspension = null;
+
+  /* The observable surface: how many decorations are actually running an
+     animation right now — in the ambient active set, in a section that is
+     on screen, plus every bunny hop currently in the air and every saying
+     currently admitted against that same budget. Bunny and saying motion
+     are part of this budget, not budgets alongside it. Cached, and
+     refreshed only on intersection changes. */
+  window.__runningAnimationCount = function () {
+    if (reduceMotion) return 0;
+    return (suspension ? suspension.state.running : 0) + inflightCount()
+      + driftRunning() + popLiveNodes.length;
+  };
+
+  window.__motionState = function () {
+    var state = suspension ? suspension.state : null;
+    var suspendedIds = [];
+    if (state) {
+      for (var id in state.suspendedIds) if (state.suspendedIds[id]) suspendedIds.push(id);
+    }
+    var running = reduceMotion ? 0 : (state ? state.running : 0) + inflightCount()
+      + driftRunning() + popLiveNodes.length;
+    return {
+      budget: MOTION_BUDGET,
+      activeFraction: ACTIVE_FRACTION,
+      activeTotal: state ? state.activeTotal : 0,
+      activeBySection: state ? Object.assign({}, state.activeBySection) : {},
+      suspendedSections: state ? state.suspendedSections : 0,
+      suspendedIds: suspendedIds,
+      running: running,
+      bunnyHops: inflightCount(),
+      hopRoom: hopRoomNow(),
+      sayings: { drift: driftRunning(), pops: popLiveNodes.length, room: sayingRoom() },
+      reduceMotion: reduceMotion,
+      rootMargin: SUSPEND_ROOT_MARGIN
+    };
+  };
+
+  function start() {
+    mount(1);
+    suspension = suspendOffScreen();
+    /* One listener for the whole page, however many bunnies are mounted.
+       The follower and the rainbow trail ride the same one. */
+    document.addEventListener('pointermove', onPointerMove, { passive: true });
+    startBunnyHops();
+    /* After the suspension observer, so the two-budget bookkeeping task 3
+       owns is already in place when the sayings ask it for room. */
+    startSayings();
+    /* THE document click listener. One, registered once, passive, and
+       placed after the sayings so their pop-in hook already exists. Every
+       click reward in the page is produced inside it. */
+    document.addEventListener('click', onPageClick, { passive: true });
+    /* Last, so the control stamps its chrome over a roster that is
+       already at the overwhelming end: the work order asked for the busy
+       page, and this is a no-op on the DOM besides that. The load state
+       is written rather than trusted, so it cannot depend on the markup. */
+    startCuteness();
+    applyCuteness(CUTENESS.MAX);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start, { once: true });
+  } else {
+    start();
+  }
+})();
+</script>
+</body>
+</html>
